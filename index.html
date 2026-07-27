@@ -6,31 +6,31 @@
 <title>Wizard Scorekeeper 🔮</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root {
   --bg: #05060a;
   --surface: #0b0d17;
   --surface2: #121626;
   --surface3: #1a2038;
-  --text: #f3f0ff;
-  --muted: #8e8aab;
-  --faint: #524d73;
+  --text: #ffffff;
+  --muted: #cbd5e1;
+  --faint: #94a3b8;
   
   --primary: #9333ea;
   --primary-glow: rgba(147, 51, 234, 0.4);
-  --gold: #f59e0b;
-  --gold-glow: rgba(245, 158, 11, 0.3);
+  --gold: #fbbf24;
+  --gold-glow: rgba(251, 191, 36, 0.35);
   
-  --success: #10b981;
-  --success-bg: rgba(16, 185, 129, 0.15);
-  --error: #f43f5e;
-  --error-bg: rgba(244, 63, 94, 0.15);
-  --neutral-bg: rgba(255, 255, 255, 0.05);
+  --success: #34d399;
+  --success-bg: rgba(16, 185, 129, 0.2);
+  --error: #fb7185;
+  --error-bg: rgba(244, 63, 94, 0.2);
+  --neutral-bg: rgba(255, 255, 255, 0.08);
   
-  --border-gold: rgba(245, 158, 11, 0.25);
-  --border-subtle: rgba(255, 255, 255, 0.08);
-  --divider: rgba(255, 255, 255, 0.04);
+  --border-gold: rgba(251, 191, 36, 0.35);
+  --border-subtle: rgba(255, 255, 255, 0.15);
+  --divider: rgba(255, 255, 255, 0.08);
   
   --font-disp: 'Cinzel', serif;
   --font-body: 'Plus Jakarta Sans', sans-serif;
@@ -42,8 +42,8 @@ body {
   min-height: 100vh;
   font-family: var(--font-body);
   background: 
-    radial-gradient(circle at 20% 0%, rgba(147, 51, 234, 0.18), transparent 40%),
-    radial-gradient(circle at 80% 100%, rgba(6, 182, 212, 0.12), transparent 40%),
+    radial-gradient(circle at 20% 0%, rgba(147, 51, 234, 0.2), transparent 40%),
+    radial-gradient(circle at 80% 100%, rgba(6, 182, 212, 0.15), transparent 40%),
     linear-gradient(180deg, var(--bg), #020305);
   color: var(--text);
   padding: 0.75rem;
@@ -61,10 +61,10 @@ button { cursor: pointer; }
 }
 
 .card, .topbar {
-  background: linear-gradient(145deg, rgba(11, 13, 23, 0.95), rgba(18, 22, 38, 0.98));
+  background: linear-gradient(145deg, rgba(15, 18, 32, 0.98), rgba(22, 28, 48, 0.98));
   border: 1px solid var(--border-gold);
   border-radius: 1rem;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.7), inset 0 1px 1px rgba(255,255,255,0.1);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.8), inset 0 1px 1px rgba(255,255,255,0.15);
   backdrop-filter: blur(12px);
   width: 100%;
 }
@@ -99,7 +99,7 @@ button { cursor: pointer; }
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-.brand p { margin: 0; color: var(--muted); font-size: 0.75rem; }
+.brand p { margin: 0; color: var(--muted); font-size: 0.8rem; font-weight: 600; }
 
 .actions, .toolbar, .chips { display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: center; }
 
@@ -109,9 +109,9 @@ button { cursor: pointer; }
   border-radius: 999px;
   border: 1px solid var(--border-subtle);
   background: var(--surface2);
-  color: var(--text);
-  font-weight: 600;
-  font-size: 0.8rem;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.82rem;
   transition: all 0.2s ease;
 }
 .btn:hover {
@@ -141,8 +141,8 @@ button { cursor: pointer; }
   background: var(--surface3);
   border: 1px solid var(--border-gold);
   color: var(--gold);
-  font-size: 0.75rem;
-  font-weight: 700;
+  font-size: 0.78rem;
+  font-weight: 800;
 }
 
 .hero { padding: 1rem; display: grid; gap: 0.75rem; }
@@ -156,11 +156,12 @@ button { cursor: pointer; }
 }
 
 .status {
-  padding: 0.6rem 0.9rem;
+  padding: 0.65rem 0.95rem;
   border-radius: 0.75rem;
-  background: rgba(147, 51, 234, 0.1);
-  border: 1px solid rgba(147, 51, 234, 0.25);
-  font-size: 0.85rem;
+  background: rgba(147, 51, 234, 0.18);
+  border: 1px solid rgba(147, 51, 234, 0.4);
+  font-size: 0.9rem;
+  color: #f3f0ff;
 }
 
 .stats { display: flex; gap: 0.5rem; }
@@ -170,21 +171,21 @@ button { cursor: pointer; }
   background: var(--surface2);
   border: 1px solid var(--border-subtle);
   text-align: center;
-  min-width: 80px;
+  min-width: 85px;
 }
 .stat span {
   display: block;
   color: var(--faint);
-  font-size: 0.65rem;
+  font-size: 0.68rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   font-weight: 800;
 }
-.stat strong { font-size: 1.1rem; color: var(--gold); font-family: var(--font-disp); }
+.stat strong { font-size: 1.15rem; color: var(--gold); font-family: var(--font-disp); font-weight: 900; }
 
 .main-grid { 
   display: grid; 
-  grid-template-columns: 280px minmax(0, 1fr); 
+  grid-template-columns: 290px minmax(0, 1fr); 
   gap: 0.75rem; 
   width: 100%;
 }
@@ -195,38 +196,43 @@ button { cursor: pointer; }
 .label {
   margin: 0 0 0.3rem;
   color: var(--gold);
-  font-size: 0.65rem;
+  font-size: 0.72rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   font-weight: 800;
   font-family: var(--font-disp);
 }
 
-.field { display: grid; gap: 0.3rem; }
-.field label { font-weight: 600; font-size: 0.78rem; color: var(--muted); }
+.field { display: grid; gap: 0.35rem; }
+.field label { font-weight: 700; font-size: 0.82rem; color: #d8b4fe; }
 .field input, .field select {
-  min-height: 38px;
+  min-height: 40px;
   padding: 0.4rem 0.75rem;
   border-radius: 0.6rem;
   border: 1px solid var(--border-subtle);
-  background: var(--surface2);
-  color: var(--text);
-  font-size: 0.85rem;
+  background: #151a2e;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.9rem;
   outline: none;
   width: 100%;
 }
+.field input:focus, .field select:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 8px var(--gold-glow);
+}
 
-.players { display: grid; gap: 0.4rem; }
-.player-row { display: grid; grid-template-columns: 36px 1fr; gap: 0.4rem; }
+.players { display: grid; gap: 0.45rem; }
+.player-row { display: grid; grid-template-columns: 38px 1fr; gap: 0.4rem; }
 .player-badge {
   display: grid;
   place-items: center;
   border-radius: 0.6rem;
-  background: var(--surface3);
+  background: #1e1b4b;
   color: var(--gold);
   font-weight: 800;
-  font-size: 0.75rem;
-  border: 1px solid var(--border-subtle);
+  font-size: 0.8rem;
+  border: 1px solid var(--border-gold);
 }
 
 .table-card { padding: 0; overflow: hidden; }
@@ -248,21 +254,21 @@ table {
 }
 
 th, td {
-  padding: 0.35rem 0.1rem;
+  padding: 0.4rem 0.1rem;
   border-bottom: 1px solid var(--divider);
   text-align: center;
   vertical-align: middle;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
 }
 
 thead th {
-  background: rgba(11, 13, 23, 0.98);
+  background: #0f1220;
   position: sticky;
   top: 0;
   z-index: 4;
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   color: var(--muted);
-  font-weight: 700;
+  font-weight: 800;
   text-transform: uppercase;
 }
 
@@ -271,16 +277,18 @@ th.player-header {
   border-right: 1px solid var(--border-subtle);
   color: var(--gold);
   font-family: var(--font-disp);
-  font-size: 0.85rem;
-  padding: 0.4rem 0.2rem;
+  font-size: 0.95rem;
+  font-weight: 800;
+  padding: 0.5rem 0.2rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  background: #14182b;
 }
 
-tr.active-row { background: rgba(147, 51, 234, 0.12) !important; }
+tr.active-row { background: rgba(147, 51, 234, 0.18) !important; }
 tr.active-row .round-col {
-  background: rgba(147, 51, 234, 0.3) !important;
+  background: rgba(147, 51, 234, 0.4) !important;
   color: var(--gold) !important;
   font-weight: 900;
 }
@@ -288,59 +296,64 @@ tr.active-row .round-col {
 .round-col {
   width: 44px;
   text-align: center;
-  background: rgba(18, 22, 38, 0.8);
-  color: var(--muted);
-  font-weight: 700;
-  font-size: 0.75rem;
+  background: rgba(18, 22, 38, 0.95);
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 0.8rem;
   font-family: var(--font-disp);
 }
 
 .mini {
   width: 90%;
-  max-width: 36px;
-  height: 30px;
+  max-width: 38px;
+  height: 32px;
   margin: 0 auto;
   padding: 0;
   border-radius: 0.4rem;
   border: 1px solid var(--border-subtle);
-  background: var(--surface2);
-  color: var(--text);
+  background: #151a2e;
+  color: #ffffff;
   text-align: center;
-  font-weight: 700;
-  font-size: 0.85rem;
+  font-weight: 800;
+  font-size: 0.9rem;
   outline: none;
   display: block;
+}
+.mini:focus {
+  border-color: var(--gold);
+  background: var(--surface3);
+  box-shadow: 0 0 6px var(--gold-glow);
 }
 
 .score {
   display: block;
   width: 90%;
-  max-width: 44px;
+  max-width: 46px;
   margin: 0 auto;
   padding: 0.25rem 0;
   border-radius: 0.4rem;
-  font-weight: 800;
-  font-size: 0.8rem;
+  font-weight: 900;
+  font-size: 0.85rem;
   text-align: center;
 }
-.pos { background: var(--success-bg); color: var(--success); border: 1px solid rgba(16, 185, 129, 0.3); }
-.neg { background: var(--error-bg); color: var(--error); border: 1px solid rgba(244, 63, 94, 0.3); }
+.pos { background: var(--success-bg); color: var(--success); border: 1px solid rgba(52, 211, 153, 0.4); }
+.neg { background: var(--error-bg); color: var(--error); border: 1px solid rgba(251, 113, 133, 0.4); }
 .neu { background: var(--neutral-bg); color: var(--muted); border: 1px solid var(--border-subtle); }
 
 .tfoot th, .tfoot td {
   font-weight: 900;
-  background: rgba(147, 51, 234, 0.15);
-  padding: 0.6rem 0.1rem;
-  font-size: 0.9rem;
+  background: rgba(147, 51, 234, 0.25);
+  padding: 0.65rem 0.1rem;
+  font-size: 0.95rem;
   color: var(--gold);
 }
 
-/* Mobile Styling & Touch Stepper */
+/* Mobile Layout & Steppers */
 .mobile { display: none; }
 .mobile-card {
-  padding: 0.85rem;
+  padding: 0.9rem;
   border-radius: 0.75rem;
-  background: var(--surface2);
+  background: #121626;
   border: 1px solid var(--border-subtle);
   margin-bottom: 0.5rem;
 }
@@ -348,65 +361,66 @@ tr.active-row .round-col {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 0.61rem;
+  margin-bottom: 0.6rem;
   padding-bottom: 0.4rem;
   border-bottom: 1px solid var(--divider);
 }
 
 .mobile-scores { text-align: right; }
 .mobile-total-badge {
-  font-size: 0.95rem;
+  font-size: 1rem;
   font-weight: 900;
   color: var(--gold);
   font-family: var(--font-disp);
 }
 .mobile-round-badge {
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   color: var(--muted);
+  font-weight: 700;
 }
 
 .mobile-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
 
-/* Stepper Controls */
 .stepper {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: var(--surface3);
+  background: #1a2038;
   border: 1px solid var(--border-gold);
   border-radius: 0.6rem;
-  padding: 2px;
+  padding: 3px;
 }
 .btn-step {
-  width: 38px;
-  height: 38px;
+  width: 42px;
+  height: 40px;
   border-radius: 0.4rem;
   border: none;
-  background: var(--surface2);
+  background: #252d4e;
   color: var(--gold);
-  font-size: 1.2rem;
-  font-weight: 800;
+  font-size: 1.3rem;
+  font-weight: 900;
   display: grid;
   place-items: center;
 }
 .btn-step:active { background: var(--primary); color: #fff; }
 .step-val {
-  font-weight: 800;
-  font-size: 1.1rem;
-  min-width: 24px;
+  font-weight: 900;
+  font-size: 1.15rem;
+  min-width: 28px;
   text-align: center;
+  color: #ffffff;
 }
 
 .trick-alert {
-  padding: 0.5rem 0.75rem;
+  padding: 0.6rem 0.75rem;
   border-radius: 0.5rem;
-  font-size: 0.8rem;
-  font-weight: 700;
+  font-size: 0.85rem;
+  font-weight: 800;
   text-align: center;
   margin-bottom: 0.75rem;
 }
-.alert-warn { background: rgba(245, 158, 11, 0.15); color: var(--gold); border: 1px solid var(--border-gold); }
-.alert-ok { background: var(--success-bg); color: var(--success); border: 1px solid rgba(16, 185, 129, 0.3); }
+.alert-warn { background: rgba(251, 191, 36, 0.18); color: var(--gold); border: 1px solid var(--border-gold); }
+.alert-ok { background: var(--success-bg); color: var(--success); border: 1px solid rgba(52, 211, 153, 0.4); }
 
 @media(max-width: 1024px) {
   .main-grid { grid-template-columns: 1fr; }
@@ -677,7 +691,7 @@ function buildTable(savedRows = null) {
   
   n.forEach(name => {
     const th = document.createElement('th');
-    th.colSpan = mode === 'anniversary' ? 4 : 3;
+    th.colSpan = 3;
     th.className = 'player-header';
     th.textContent = name;
     tr1.appendChild(th);
@@ -685,7 +699,7 @@ function buildTable(savedRows = null) {
 
   const tr2 = document.createElement('tr');
   n.forEach(() => {
-    ['A', 'S', ...(mode === 'anniversary' ? ['N'] : []), 'P'].forEach(label => {
+    ['A', 'S', 'P'].forEach(label => {
       const th = document.createElement('th');
       th.textContent = label;
       tr2.appendChild(th);
@@ -734,21 +748,9 @@ function buildTable(savedRows = null) {
 
       const td1 = document.createElement('td'); td1.appendChild(bid);
       const td2 = document.createElement('td'); td2.appendChild(trick);
-      tr.append(td1, td2);
-
-      if (mode === 'anniversary') {
-        const note = document.createElement('input');
-        note.type = 'text';
-        note.value = saved.note || '';
-        note.className = 'mini';
-        note.style.maxWidth = '100%';
-        note.addEventListener('input', () => saveState());
-        const td3 = document.createElement('td'); td3.appendChild(note);
-        tr.appendChild(td3);
-      }
-
       const tdS = document.createElement('td'); tdS.appendChild(score);
-      tr.appendChild(tdS);
+      
+      tr.append(td1, td2, tdS);
     });
 
     tbody.appendChild(tr);
@@ -761,7 +763,7 @@ function buildTable(savedRows = null) {
   trf.append(thA);
 
   n.forEach(() => {
-    ['—', '—', ...(mode === 'anniversary' ? ['—'] : [])].forEach(v => {
+    ['—', '—'].forEach(v => {
       const td = document.createElement('td'); td.textContent = v; trf.appendChild(td);
     });
     const total = document.createElement('td');
@@ -851,7 +853,6 @@ function renderMobile() {
   const scores = row.querySelectorAll('[data-score]');
   const currentTotals = calculateTotalsUpToRound(current);
 
-  // Trick sum validation check
   let totalTricksEntered = 0;
   let filledTricks = 0;
   tricks.forEach(t => {
@@ -864,7 +865,7 @@ function renderMobile() {
   if (filledTricks === n.length) {
     if (totalTricksEntered === current) {
       els.trickValidation.className = 'trick-alert alert-ok';
-      els.trickValidation.textContent = `✓ Stichesumme korrekte (${totalTricksEntered}/${current})`;
+      els.trickValidation.textContent = `✓ Stichesumme korrekt (${totalTricksEntered}/${current})`;
     } else {
       els.trickValidation.className = 'trick-alert alert-warn';
       els.trickValidation.textContent = `⚠️ Stichesumme ist ${totalTricksEntered}, müsste aber ${current} sein!`;
@@ -887,7 +888,7 @@ function renderMobile() {
     head.innerHTML = `
       <div>
         <div class="label">P${idx + 1}</div>
-        <strong>${name}</strong>
+        <strong style="font-size:1.05rem; color:#fff;">${name}</strong>
       </div>
       <div class="mobile-scores">
         <div class="mobile-total-badge">Gesamt: ${currentTotals[idx]} Pkt.</div>
@@ -960,8 +961,7 @@ function serializeState() {
     round: Number(row.dataset.round),
     players: n.map((_, idx) => ({
       bid: row.querySelectorAll('.bid')[idx]?.value ?? '',
-      tricks: row.querySelectorAll('.trick')[idx]?.value ?? '',
-      note: mode === 'anniversary' ? (row.querySelectorAll('input[type="text"]')[idx]?.value || '') : ''
+      tricks: row.querySelectorAll('.trick')[idx]?.value ?? ''
     }))
   }));
   return {
@@ -1020,14 +1020,13 @@ els.csvBtn.addEventListener('click', () => {
   lines.push(['Modus', mode === 'classic' ? 'Classic' : '30J Edition'].join(';'));
   
   const head = ['Runde'];
-  n.forEach(name => head.push(`${name} Ansage`, `${name} Stiche`, ...(mode === 'anniversary' ? [`${name} Notiz`] : []), `${name} Punkte`));
+  n.forEach(name => head.push(`${name} Ansage`, `${name} Stiche`, `${name} Punkte`));
   lines.push(head.join(';'));
 
   [...els.scoreTable.querySelectorAll('tbody tr')].forEach(row => {
     const out = [row.dataset.round];
     n.forEach((_, idx) => {
       out.push(row.querySelectorAll('.bid')[idx].value, row.querySelectorAll('.trick')[idx].value);
-      if (mode === 'anniversary') out.push(row.querySelectorAll('input[type="text"]')[idx].value || '');
       out.push(row.querySelectorAll('[data-score]')[idx].textContent);
     });
     lines.push(out.join(';'));
