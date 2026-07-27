@@ -342,12 +342,28 @@ tr.active-row .round-col {
 .neg { background: var(--error-bg); color: var(--error); border: 1px solid rgba(251, 113, 133, 0.4); }
 .neu { background: var(--neutral-bg); color: var(--muted); border: 1px solid var(--border-subtle); }
 
+/* Leader Glow in Fußzeile */
 .tfoot th, .tfoot td {
   font-weight: 900;
   background: rgba(147, 51, 234, 0.25);
   padding: 0.65rem 0.1rem;
   font-size: 0.95rem;
   color: var(--gold);
+  transition: all 0.3s ease;
+}
+
+.tfoot td.leader-cell {
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.4), rgba(217, 119, 6, 0.3)) !important;
+  color: #ffffff !important;
+  font-weight: 900 !important;
+  box-shadow: inset 0 0 10px var(--gold-glow);
+  border: 1px solid var(--gold) !important;
+}
+
+.leader-crown {
+  display: inline-block;
+  margin-right: 2px;
+  font-size: 0.85rem;
 }
 
 /* Mobile Layout & Steppers */
@@ -487,10 +503,12 @@ tr.active-row .round-col {
     <div class="field"><label for="maxRounds">Max. Runden</label><select id="maxRounds"></select></div>
     <div class="field"><label for="currentRound">Fokus-Runde</label><select id="currentRound"></select></div>
     <div class="field"><label for="dealerStart">Erster Geber</label><select id="dealerStart"></select></div>
-    <div><p class="label">Spieler Namen</p><div class="players" id="players"></div></div>
-    <div class="stack" style="margin-top: 0.4rem;">
-      <button class="btn" id="defaultNamesBtn" style="width: 100%;">Standardnamen laden</button>
-      <button class="btn btn-primary" id="refreshBtn" style="width: 100%;">Tabelle berechnen</button>
+    <div>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.3rem;">
+        <p class="label" style="margin:0;">Spieler Namen</p>
+        <button class="btn" id="defaultNamesBtn" style="padding:0.2rem 0.5rem; font-size:0.7rem;">Zurücksetzen</button>
+      </div>
+      <div class="players" id="players"></div>
     </div>
   </aside>
 
@@ -498,7 +516,7 @@ tr.active-row .round-col {
     <section class="card table-card desktop">
       <div class="table-head">
         <div><p class="label">Übersicht</p><h2>Partietabelle (A = Ansage · S = Stiche · P = Punkte)</h2></div>
-        <div class="chips"><div class="pill">✦ Aktive Runde hervorgehoben</div></div>
+        <div class="chips"><div class="pill">✦ ⌨️ Tab / Enter Navigation aktiv</div></div>
       </div>
       <div class="table-wrap"><table id="scoreTable"></table></div>
     </section>
@@ -534,7 +552,6 @@ const els = {
   csvBtn: document.getElementById('csvBtn'),
   resetBtn: document.getElementById('resetBtn'),
   defaultNamesBtn: document.getElementById('defaultNamesBtn'),
-  refreshBtn: document.getElementById('refreshBtn'),
   prevBtn: document.getElementById('prevBtn'),
   nextBtn: document.getElementById('nextBtn'),
   gameName: document.getElementById('gameName'),
@@ -742,8 +759,21 @@ function buildTable(savedRows = null) {
       score.dataset.score = 'true';
       score.textContent = '—';
 
+      // Keyboard Flow: Enter springt direkt ins nächste Feld
       [bid, trick].forEach(el => {
         el.addEventListener('input', () => { recalc(); saveState(); renderMobile(); });
+        el.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            const allMinis = [...els.scoreTable.querySelectorAll('input.mini')];
+            const currentIdx = allMinis.indexOf(e.target);
+            if (currentIdx > -1 && currentIdx < allMinis.length - 1) {
+              allMinis[currentIdx + 1].focus();
+              allMinis[currentIdx + 1].select();
+            }
+          }
+        });
+        el.addEventListener('focus', (e) => e.target.select());
       });
 
       const td1 = document.createElement('td'); td1.appendChild(bid);
@@ -819,6 +849,7 @@ function recalc() {
   const rows = [...els.scoreTable.querySelectorAll('tbody tr')];
   const n = names();
   const totals = Array(n.length).fill(0);
+  let hasActiveScores = false;
 
   rows.forEach(row => {
     const bids = [...row.querySelectorAll('.bid')];
@@ -828,6 +859,7 @@ function recalc() {
     bids.forEach((bEl, idx) => {
       const res = scoreWizard(bEl.value, tricks[idx].value);
       if (res.isPlayed) {
+        hasActiveScores = true;
         totals[idx] += res.score;
         scores[idx].textContent = String(res.score);
         scores[idx].className = 'score ' + (res.score > 0 ? 'pos' : res.score < 0 ? 'neg' : 'neu');
@@ -838,7 +870,21 @@ function recalc() {
     });
   });
 
-  [...els.scoreTable.querySelectorAll('[data-total]')].forEach((td, idx) => td.textContent = String(totals[idx]));
+  // Leader-Glow Berechnung
+  const maxTotal = Math.max(...totals);
+  const totalCells = [...els.scoreTable.querySelectorAll('[data-total]')];
+
+  totalCells.forEach((td, idx) => {
+    const isLeader = hasActiveScores && totals[idx] === maxTotal;
+    if (isLeader) {
+      td.className = 'leader-cell';
+      td.innerHTML = `<span class="leader-crown">👑</span>${totals[idx]}`;
+    } else {
+      td.className = '';
+      td.textContent = String(totals[idx]);
+    }
+  });
+
   updateRoundState(n, totals);
 }
 
@@ -1045,11 +1091,6 @@ els.resetBtn.addEventListener('click', resetAll);
 els.defaultNamesBtn.addEventListener('click', () => {
   renderPlayers();
   buildTable(null);
-  saveState();
-});
-
-els.refreshBtn.addEventListener('click', () => {
-  buildTable(loadState()?.rows || null);
   saveState();
 });
 
