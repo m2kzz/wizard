@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Wizard Block & App</title>
+  <title>Wizard Keeper Deluxe</title>
   <style>
     :root {
       --bg: #0f172a;
@@ -11,34 +11,40 @@
       --accent: #38bdf8;
       --danger: #ef4444;
       --warning: #f59e0b;
+      --success: #10b981;
       --text: #f8fafc;
       --text-muted: #94a3b8;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
-    body { background: var(--bg); color: var(--text); padding: 15px; max-width: 600px; margin: 0 auto; }
+    body { background: var(--bg); color: var(--text); padding: 15px; max-width: 650px; margin: 0 auto; }
     
-    h1, h2, h3 { text-align: center; margin-bottom: 15px; }
+    h1, h2, h3, h4 { text-align: center; margin-bottom: 12px; }
     .card { background: var(--card); border-radius: 12px; padding: 16px; margin-bottom: 15px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.3); }
     
     label { display: block; font-size: 0.9rem; color: var(--text-muted); margin-bottom: 5px; }
-    input { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: var(--text); font-size: 1rem; margin-bottom: 10px; }
+    input[type="text"], input[type="number"], select { 
+      width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: var(--text); font-size: 1rem; margin-bottom: 12px; 
+    }
     
+    .checkbox-group { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; cursor: pointer; }
+    .checkbox-group input { width: auto; margin: 0; }
+
     button { width: 100%; padding: 12px; border: none; border-radius: 8px; background: var(--accent); color: #000; font-weight: bold; font-size: 1rem; cursor: pointer; transition: opacity 0.2s; }
-    button:disabled { opacity: 0.5; cursor: not-allowed; }
+    button:disabled { opacity: 0.4; cursor: not-allowed; }
     .btn-secondary { background: #334155; color: var(--text); margin-top: 10px; }
     
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; }
-    .player-input-group { background: #0f172a; padding: 10px; border-radius: 8px; border: 1px solid #334155; }
-    
-    /* Warnmeldung-Banner */
-    .alert-banner { background: rgba(239, 68, 68, 0.15); border: 1px solid var(--danger); color: #fca5a5; padding: 12px; border-radius: 8px; margin-top: 10px; text-align: center; font-weight: 500; }
-    .info-banner { background: rgba(245, 158, 11, 0.15); border: 1px solid var(--warning); color: #fde047; padding: 10px; border-radius: 8px; margin-bottom: 15px; font-size: 0.9rem; text-align: center; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; }
+    .player-input-group { background: #0f172a; padding: 10px; border-radius: 8px; border: 1px solid #334155; position: relative; }
+    .player-badge { font-size: 0.75rem; background: #334155; padding: 2px 6px; border-radius: 4px; color: var(--accent); float: right; }
 
-    table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.9rem; }
+    .alert-banner { background: rgba(239, 68, 68, 0.15); border: 1px solid var(--danger); color: #fca5a5; padding: 10px; border-radius: 8px; margin-top: 10px; text-align: center; font-size: 0.9rem; }
+    .info-banner { background: rgba(56, 189, 248, 0.15); border: 1px solid var(--accent); color: var(--accent); padding: 10px; border-radius: 8px; margin-top: 10px; text-align: center; font-size: 0.9rem; }
+
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.85rem; }
     th, td { padding: 8px; text-align: center; border-bottom: 1px solid #334155; }
     th { color: var(--accent); }
-    .hidden { display: none; }
+    .hidden { display: none !important; }
   </style>
 </head>
 <body>
@@ -47,28 +53,40 @@
 
   <!-- SETUP SCREEN -->
   <div id="setup-screen" class="card">
-    <h2>Neues Spiel starten</h2>
+    <h2>Regeln & Einstellungen</h2>
+    
+    <label for="edition-select">Edition wählen:</label>
+    <select id="edition-select">
+      <option value="standard">Standard Wizard</option>
+      <option value="30j">30 Jahre Jubiläumsausgabe (Bombe, Wolke etc.)</option>
+    </select>
+
+    <div class="checkbox-group">
+      <input type="checkbox" id="rule-forbidden-bid" checked>
+      <label for="rule-forbidden-bid">Letzter Spieler darf passende Stich-Summe nicht ansagen</label>
+    </div>
+
     <label for="player-count">Anzahl Spieler (3–6):</label>
     <input type="number" id="player-count" min="3" max="6" value="4">
-    <button onclick="generatePlayerInputs()">Spieler eintragen</button>
+    <button onclick="generatePlayerInputs()">Spielernamen eingeben</button>
 
     <div id="player-names-container" class="hidden" style="margin-top: 15px;">
       <div id="name-inputs"></div>
-      <button onclick="startGame()">Spiel starten</button>
+      <button onclick="startGame()">Spiel jetzt starten</button>
     </div>
   </div>
 
   <!-- GAME SCREEN -->
   <div id="game-screen" class="card hidden">
-    <h2 id="round-header">Runde 1 (1 Karte)</h2>
+    <h2 id="round-header">Runde 1</h2>
     
     <!-- PHASE 1: ANSAGEN -->
     <div id="bidding-phase">
       <h3>1. Stich-Ansagen</h3>
       <div id="bidding-inputs" class="grid"></div>
       
-      <!-- Live Warnmeldung bezüglich Regelverstoß -->
       <div id="rule-warning" class="alert-banner hidden"></div>
+      <div id="rule-info" class="info-banner hidden"></div>
       
       <button id="btn-submit-bids" style="margin-top: 15px;" onclick="confirmBids()">Ansagen bestätigen</button>
     </div>
@@ -76,35 +94,74 @@
     <!-- PHASE 2: ERGEBNISSE -->
     <div id="result-phase" class="hidden">
       <h3>2. Gemachte Stiche</h3>
+      
+      <!-- 30 Jahre Sonderkarten Box -->
+      <div id="edition-30j-options" class="hidden" style="background: #0f172a; padding: 12px; border-radius: 8px; margin-bottom: 15px; border: 1px solid #334155;">
+        <h4 style="color: #fde047; margin-bottom: 8px; font-size: 0.9rem;">✨ 30-Jahre-Sonderkarten in dieser Runde:</h4>
+        
+        <div class="checkbox-group">
+          <input type="checkbox" id="bomb-played" onchange="validateResultsLive()">
+          <label for="bomb-played" style="margin:0; color: #fde047;">💣 Bombe wurde gespielt (-1 Stich Gesamtsumme)</label>
+        </div>
+
+        <div class="checkbox-group" style="margin-top: 6px;">
+          <input type="checkbox" id="cloud-played" onchange="toggleCloudUI()">
+          <label for="cloud-played" style="margin:0; color: #38bdf8;">☁️ Wolke wurde gespielt (Ansage korrigieren)</label>
+        </div>
+
+        <div id="cloud-details" class="hidden" style="margin-top: 10px; background: #1e293b; padding: 10px; border-radius: 6px;">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <div>
+              <label style="font-size: 0.8rem;">Spieler mit Wolke:</label>
+              <select id="cloud-player-select" onchange="validateResultsLive()"></select>
+            </div>
+            <div>
+              <label style="font-size: 0.8rem;">Anpassung:</label>
+              <select id="cloud-delta-select" onchange="validateResultsLive()">
+                <option value="1">+1 Stich ansagen</option>
+                <option value="-1">-1 Stich ansagen</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div id="result-inputs" class="grid"></div>
       <div id="result-warning" class="alert-banner hidden"></div>
-      <button style="margin-top: 15px;" onclick="confirmResults()">Runde auswerten</button>
+      <button id="btn-submit-results" style="margin-top: 15px;" onclick="confirmResults()">Runde auswerten</button>
     </div>
   </div>
 
   <!-- SCOREBOARD -->
   <div id="scoreboard-screen" class="card hidden">
     <h2>Punktestand</h2>
-    <table>
-      <thead>
-        <tr id="table-head"></tr>
-      </thead>
-      <tbody id="table-body"></tbody>
-    </table>
-    <button class="btn-secondary" onclick="resetGame()">Neues Spiel</button>
+    <div style="overflow-x: auto;">
+      <table>
+        <thead>
+          <tr id="table-head"></tr>
+        </thead>
+        <tbody id="table-body"></tbody>
+      </table>
+    </div>
+    <button class="btn-secondary" onclick="resetGame()">Neues Spiel aufsetzen</button>
   </div>
 
   <script>
-    let state = {
+    let config = {
+      edition: 'standard',
+      enableForbiddenBidRule: true,
       players: [],
-      currentRound: 1,
-      maxRounds: 0,
-      bids: [],
-      scores: {}, // { SpielerName: gesamtPunkte }
-      history: [] // Runden-Protokoll
+      maxRounds: 0
     };
 
-    // Spiel-Initialisierung
+    let state = {
+      currentRound: 1,
+      dealerIdx: 0,
+      bids: [],
+      scores: {},
+      history: []
+    };
+
     function generatePlayerInputs() {
       const count = parseInt(document.getElementById('player-count').value);
       const container = document.getElementById('name-inputs');
@@ -121,12 +178,14 @@
 
     function startGame() {
       const inputs = document.querySelectorAll('.player-name-input');
-      state.players = Array.from(inputs).map(i => i.value.trim() || 'Unbenannt');
-      state.maxRounds = Math.floor(60 / state.players.length);
+      config.players = Array.from(inputs).map(i => i.value.trim() || 'Unbenannt');
+      config.edition = document.getElementById('edition-select').value;
+      config.enableForbiddenBidRule = document.getElementById('rule-forbidden-bid').checked;
+      config.maxRounds = Math.floor(60 / config.players.length);
+
       state.currentRound = 1;
       state.history = [];
-      
-      state.players.forEach(p => state.scores[p] = 0);
+      config.players.forEach(p => state.scores[p] = 0);
 
       document.getElementById('setup-screen').classList.add('hidden');
       document.getElementById('game-screen').classList.remove('hidden');
@@ -136,156 +195,228 @@
       startRound();
     }
 
-    // Runden-Steuerung
     function startRound() {
       const cardsInRound = state.currentRound;
-      document.getElementById('round-header').innerText = `Runde ${state.currentRound} von ${state.maxRounds} (${cardsInRound} ${cardsInRound === 1 ? 'Karte' : 'Karten'})`;
+      state.dealerIdx = (state.currentRound - 1) % config.players.length;
+
+      document.getElementById('round-header').innerText = `Runde ${state.currentRound} von ${config.maxRounds} (${cardsInRound} ${cardsInRound === 1 ? 'Karte' : 'Karten'})`;
       
       document.getElementById('bidding-phase').classList.remove('hidden');
       document.getElementById('result-phase').classList.add('hidden');
       document.getElementById('rule-warning').classList.add('hidden');
+      document.getElementById('rule-info').classList.add('hidden');
 
-      // Bidding Inputs erzeugen
       const bidsDiv = document.getElementById('bidding-inputs');
       bidsDiv.innerHTML = '';
       
-      state.players.forEach((player, idx) => {
+      const total = config.players.length;
+      for (let i = 0; i < total; i++) {
+        const pIdx = (state.dealerIdx + 1 + i) % total;
+        const isLast = (i === total - 1);
+        const playerName = config.players[pIdx];
+
         bidsDiv.innerHTML += `
           <div class="player-input-group">
-            <label>${player} ${idx === state.players.length - 1 ? '👑 (Letzter)' : ''}</label>
-            <input type="number" min="0" max="${cardsInRound}" class="bid-input" data-index="${idx}" oninput="validateBids()">
+            <span class="player-badge">${isLast ? '👑 Letzter' : (i + 1) + '.'}</span>
+            <label>${playerName}</label>
+            <input type="number" min="0" max="${cardsInRound}" class="bid-input" data-player-index="${pIdx}" data-order="${i}" oninput="validateBids()">
           </div>
         `;
-      });
+      }
 
       validateBids();
     }
 
-    // CORE LOGIK: Dynamische Validierung für den letzten Spieler
     function validateBids() {
-      const inputs = Array.from(document.querySelectorAll('.bid-input'));
+      const inputs = Array.from(document.querySelectorAll('.bid-input')).sort((a, b) => a.dataset.order - b.dataset.order);
       const cardsInRound = state.currentRound;
-      const totalPlayers = state.players.length;
+      const total = config.players.length;
       const warningBox = document.getElementById('rule-warning');
+      const infoBox = document.getElementById('rule-info');
       const submitBtn = document.getElementById('btn-submit-bids');
+
+      warningBox.classList.add('hidden');
+      infoBox.classList.add('hidden');
 
       let filledCount = 0;
       let sumFirstPlayers = 0;
 
-      // Summe der ersten (N-1) Spieler berechnen
-      for (let i = 0; i < totalPlayers - 1; i++) {
-        const val = inputs[i].value;
-        if (val !== '') {
+      for (let i = 0; i < total - 1; i++) {
+        if (inputs[i].value !== '') {
           filledCount++;
-          sumFirstPlayers += parseInt(val, 10);
+          sumFirstPlayers += parseInt(inputs[i].value, 10);
         }
       }
 
-      // Prüfen, ob der letzte Spieler an der Reihe ist
-      const lastInput = inputs[totalPlayers - 1];
+      const lastInput = inputs[total - 1];
+      const lastPlayerIdx = parseInt(lastInput.dataset.playerIndex, 10);
+      const lastPlayerName = config.players[lastPlayerIdx];
       const verboteneZahl = cardsInRound - sumFirstPlayers;
-      const isForbiddenValid = verboteneZahl >= 0 && verbotenerStichIsPossible(verboteneZahl, cardsInRound);
-
       let hasRuleViolation = false;
 
-      // Wenn die Vorletzten eingegeben wurden, bestimmen wir die Regel
-      if (filledCount === totalPlayers - 1 && isForbiddenValid) {
+      if (config.enableForbiddenBidRule && filledCount === total - 1 && verboteneZahl >= 0 && verboteneZahl <= cardsInRound) {
         const lastVal = lastInput.value !== '' ? parseInt(lastInput.value, 10) : null;
 
         if (lastVal === verboteneZahl) {
           hasRuleViolation = true;
-          warningBox.innerHTML = `⚠️ <strong>Regelverstoß!</strong> ${state.players[totalPlayers - 1]} darf nicht genau <strong>${verboteneZahl}</strong> ansagen (Summe aller Ansagen darf nicht ${cardsInRound} sein).`;
+          warningBox.innerHTML = `⚠️ <strong>Regelverstoß!</strong> ${lastPlayerName} darf nicht genau <strong>${verboteneZahl}</strong> ansagen.`;
           warningBox.classList.remove('hidden');
         } else {
-          warningBox.innerHTML = `ℹ️ <strong>Hinweis für ${state.players[totalPlayers - 1]}:</strong> Du darfst <strong>nicht ${verboteneZahl}</strong> ansagen!`;
-          warningBox.classList.remove('hidden');
+          infoBox.innerHTML = `ℹ️ <strong>Hinweis für ${lastPlayerName}:</strong> Du darfst <strong>nicht ${verboteneZahl}</strong> ansagen.`;
+          infoBox.classList.remove('hidden');
         }
-      } else {
-        warningBox.classList.add('hidden');
       }
 
-      // Button sperren, falls Regel verletzt ist oder nicht alle Felder ausgefüllt sind
       const allFilled = inputs.every(i => i.value !== '');
       submitBtn.disabled = !allFilled || hasRuleViolation;
     }
 
-    function verbotenerStichIsPossible(val, maxCards) {
-      return val >= 0 && val <= maxCards;
-    }
-
     function confirmBids() {
       const inputs = document.querySelectorAll('.bid-input');
-      state.bids = Array.from(inputs).map(i => parseInt(i.value, 10));
+      state.bids = [];
+      inputs.forEach(i => {
+        state.bids[parseInt(i.dataset.playerIndex, 10)] = parseInt(i.value, 10);
+      });
 
-      // Wechsel zu Phase 2: Gemachte Stiche
       document.getElementById('bidding-phase').classList.add('hidden');
       document.getElementById('result-phase').classList.remove('hidden');
+
+      // 30-Jahre-Features aktivieren
+      const editionBox = document.getElementById('edition-30j-options');
+      const bombCheckbox = document.getElementById('bomb-played');
+      const cloudCheckbox = document.getElementById('cloud-played');
+      
+      bombCheckbox.checked = false;
+      cloudCheckbox.checked = false;
+      document.getElementById('cloud-details').classList.add('hidden');
+      
+      if (config.edition === '30j') {
+        editionBox.classList.remove('hidden');
+        
+        // Spieler-Dropdown für Wolke füllen
+        const cloudSelect = document.getElementById('cloud-player-select');
+        cloudSelect.innerHTML = '';
+        config.players.forEach((p, idx) => {
+          cloudSelect.innerHTML += `<option value="${idx}">${p}</option>`;
+        });
+      } else {
+        editionBox.classList.add('hidden');
+      }
 
       const resDiv = document.getElementById('result-inputs');
       resDiv.innerHTML = '';
       
-      state.players.forEach((player, idx) => {
+      config.players.forEach((player, idx) => {
         resDiv.innerHTML += `
           <div class="player-input-group">
-            <label>${player} (Ansage: ${state.bids[idx]})</label>
-            <input type="number" min="0" max="${state.currentRound}" class="result-input">
+            <label id="label-result-${idx}">${player} (Ansage: ${state.bids[idx]})</label>
+            <input type="number" min="0" max="${state.currentRound}" class="result-input" data-player-index="${idx}" oninput="validateResultsLive()">
           </div>
         `;
       });
+
+      validateResultsLive();
+    }
+
+    function toggleCloudUI() {
+      const cloudChecked = document.getElementById('cloud-played').checked;
+      const cloudDetails = document.getElementById('cloud-details');
+      
+      if (cloudChecked) {
+        cloudDetails.classList.remove('hidden');
+      } else {
+        cloudDetails.classList.add('hidden');
+      }
+      validateResultsLive();
+    }
+
+    function validateResultsLive() {
+      const inputs = Array.from(document.querySelectorAll('.result-input'));
+      const warningBox = document.getElementById('result-warning');
+      const submitBtn = document.getElementById('btn-submit-results');
+      
+      const bombPlayed = config.edition === '30j' && document.getElementById('bomb-played').checked;
+      const cloudPlayed = config.edition === '30j' && document.getElementById('cloud-played').checked;
+
+      // Labels mit Wolken-Effekt updaten
+      config.players.forEach((player, idx) => {
+        const label = document.getElementById(`label-result-${idx}`);
+        let origBid = state.bids[idx];
+
+        if (cloudPlayed) {
+          const cloudPIdx = parseInt(document.getElementById('cloud-player-select').value, 10);
+          const delta = parseInt(document.getElementById('cloud-delta-select').value, 10);
+          
+          if (idx === cloudPIdx) {
+            const newBid = Math.max(0, origBid + delta);
+            label.innerHTML = `☁️ ${player} (Ansage: <s style="opacity:0.6">${origBid}</s> ➔ <strong>${newBid}</strong>)`;
+            return;
+          }
+        }
+        label.innerHTML = `${player} (Ansage: ${origBid})`;
+      });
+
+      const expectedTotal = state.currentRound - (bombPlayed ? 1 : 0);
+      const allFilled = inputs.every(i => i.value !== '');
+      
+      if (!allFilled) {
+        warningBox.classList.add('hidden');
+        submitBtn.disabled = true;
+        return;
+      }
+
+      const currentSum = inputs.reduce((sum, i) => sum + parseInt(i.value || 0, 10), 0);
+
+      if (currentSum !== expectedTotal) {
+        warningBox.innerHTML = `⚠️ Gemachte Stiche ergeben <strong>${currentSum}</strong>. Erwartet werden genau <strong>${expectedTotal}</strong> ${bombPlayed ? '(wegen Bombe)' : ''}.`;
+        warningBox.classList.remove('hidden');
+        submitBtn.disabled = true;
+      } else {
+        warningBox.classList.add('hidden');
+        submitBtn.disabled = false;
+      }
     }
 
     function confirmResults() {
-      const inputs = Array.from(document.querySelectorAll('.result-input'));
-      const results = inputs.map(i => parseInt(i.value || 0, 10));
-      const cardsInRound = state.currentRound;
-      const warningBox = document.getElementById('result-warning');
+      const inputs = document.querySelectorAll('.result-input');
+      const cloudPlayed = config.edition === '30j' && document.getElementById('cloud-played').checked;
+      const cloudPIdx = cloudPlayed ? parseInt(document.getElementById('cloud-player-select').value, 10) : -1;
+      const cloudDelta = cloudPlayed ? parseInt(document.getElementById('cloud-delta-select').value, 10) : 0;
 
-      // Validierung: Summe gemachte Stiche MUSS genau der Kartenanzahl entsprechen
-      const sumResults = results.reduce((a, b) => a + b, 0);
-      if (sumResults !== cardsInRound) {
-        warningBox.innerText = `⚠️ Summe der gemachten Stiche muss genau ${cardsInRound} ergeben (aktuell: ${sumResults}).`;
-        warningBox.classList.remove('hidden');
-        return;
-      }
-      warningBox.classList.add('hidden');
-
-      // Punkte berechnen & Kontostände aktualisieren
       let roundScores = {};
-      state.players.forEach((player, idx) => {
-        const bid = state.bids[idx];
-        const made = results[idx];
-        let diff = Math.abs(bid - made);
-        let points = 0;
 
-        if (diff === 0) {
-          points = 20 + (made * 10);
-        } else {
-          points = -(diff * 10);
+      inputs.forEach(i => {
+        const pIdx = parseInt(i.dataset.playerIndex, 10);
+        const playerName = config.players[pIdx];
+        
+        let bid = state.bids[pIdx];
+        if (cloudPlayed && pIdx === cloudPIdx) {
+          bid = Math.max(0, bid + cloudDelta);
         }
 
-        state.scores[player] += points;
-        roundScores[player] = state.scores[player];
+        const made = parseInt(i.value, 10);
+        let diff = Math.abs(bid - made);
+        let points = (diff === 0) ? (20 + made * 10) : -(diff * 10);
+
+        state.scores[playerName] += points;
+        roundScores[playerName] = state.scores[playerName];
       });
 
       state.history.push({ round: state.currentRound, scores: { ...roundScores } });
       updateScoreboard();
 
-      // Nächste Runde oder Spielende
-      if (state.currentRound < state.maxRounds) {
+      if (state.currentRound < config.maxRounds) {
         state.currentRound++;
-        // Dealer-Rotation: Ersten Spieler ans Ende schieben
-        state.players.push(state.players.shift());
         startRound();
       } else {
         alert("🎉 Spiel beendet! Gewonnen hat: " + getWinner());
       }
     }
 
-    // Scoreboard UI
     function renderTableHeaders() {
       const tr = document.getElementById('table-head');
       tr.innerHTML = '<th>Runde</th>';
-      state.players.forEach(p => tr.innerHTML += `<th>${p}</th>`);
+      config.players.forEach(p => tr.innerHTML += `<th>${p}</th>`);
     }
 
     function updateScoreboard() {
@@ -294,8 +425,7 @@
 
       state.history.forEach(h => {
         let row = `<tr><td>${h.round}</td>`;
-        // Richtige Reihenfolge beibehalten
-        Object.keys(state.scores).forEach(p => {
+        config.players.forEach(p => {
           row += `<td>${h.scores[p] !== undefined ? h.scores[p] : '-'}</td>`;
         });
         row += '</tr>';
