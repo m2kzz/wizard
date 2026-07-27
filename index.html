@@ -1,1578 +1,317 @@
 <!DOCTYPE html>
-<html lang="de" data-theme="dark">
+<html lang="de">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="theme-color" content="#05060a" />
-<title>Wizard Scorekeeper Pro 🔮</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wizard Block & App</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card: #1e293b;
+      --accent: #38bdf8;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+    }
 
-<!-- Web App Manifest (PWA Inline) -->
-<link rel="manifest" href='data:application/manifest+json,{"name":"Wizard Keeper Pro","short_name":"Wizard","start_url":".","display":"standalone","background_color":"#05060a","theme_color":"#05060a","icons":[{"src":"data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔮</text></svg>","sizes":"512x512","type":"image/svg+xml"}]}'>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
+    body { background: var(--bg); color: var(--text); padding: 15px; max-width: 600px; margin: 0 auto; }
+    
+    h1, h2, h3 { text-align: center; margin-bottom: 15px; }
+    .card { background: var(--card); border-radius: 12px; padding: 16px; margin-bottom: 15px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.3); }
+    
+    label { display: block; font-size: 0.9rem; color: var(--text-muted); margin-bottom: 5px; }
+    input { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: var(--text); font-size: 1rem; margin-bottom: 10px; }
+    
+    button { width: 100%; padding: 12px; border: none; border-radius: 8px; background: var(--accent); color: #000; font-weight: bold; font-size: 1rem; cursor: pointer; transition: opacity 0.2s; }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn-secondary { background: #334155; color: var(--text); margin-top: 10px; }
+    
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; }
+    .player-input-group { background: #0f172a; padding: 10px; border-radius: 8px; border: 1px solid #334155; }
+    
+    /* Warnmeldung-Banner */
+    .alert-banner { background: rgba(239, 68, 68, 0.15); border: 1px solid var(--danger); color: #fca5a5; padding: 12px; border-radius: 8px; margin-top: 10px; text-align: center; font-weight: 500; }
+    .info-banner { background: rgba(245, 158, 11, 0.15); border: 1px solid var(--warning); color: #fde047; padding: 10px; border-radius: 8px; margin-bottom: 15px; font-size: 0.9rem; text-align: center; }
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
-
-<style>
-:root {
-  --bg: #05060a;
-  --surface: #0b0d17;
-  --surface2: #121626;
-  --surface3: #1a2038;
-  --text: #ffffff;
-  --muted: #cbd5e1;
-  --faint: #94a3b8;
-  
-  --primary: #9333ea;
-  --primary-glow: rgba(147, 51, 234, 0.4);
-  --gold: #fbbf24;
-  --gold-glow: rgba(251, 191, 36, 0.35);
-  
-  --success: #34d399;
-  --success-bg: rgba(16, 185, 129, 0.2);
-  --error: #fb7185;
-  --error-bg: rgba(244, 63, 94, 0.2);
-  --neutral-bg: rgba(255, 255, 255, 0.08);
-  
-  --border-gold: rgba(251, 191, 36, 0.35);
-  --border-subtle: rgba(255, 255, 255, 0.15);
-  --divider: rgba(255, 255, 255, 0.08);
-  
-  --font-disp: 'Cinzel', serif;
-  --font-body: 'Plus Jakarta Sans', sans-serif;
-}
-
-* { box-sizing: border-box; }
-body {
-  margin: 0;
-  min-height: 100vh;
-  font-family: var(--font-body);
-  background: 
-    radial-gradient(circle at 20% 0%, rgba(147, 51, 234, 0.2), transparent 40%),
-    radial-gradient(circle at 80% 100%, rgba(6, 182, 212, 0.15), transparent 40%),
-    linear-gradient(180deg, var(--bg), #020305);
-  color: var(--text);
-  padding: 0.75rem;
-}
-
-button, input, select { font: inherit; color: var(--text); }
-button { cursor: pointer; }
-
-.app {
-  max-width: 1400px;
-  margin: 0 auto;
-  display: grid;
-  gap: 0.75rem;
-  width: 100%;
-}
-
-.card, .topbar {
-  background: linear-gradient(145deg, rgba(15, 18, 32, 0.98), rgba(22, 28, 48, 0.98));
-  border: 1px solid var(--border-gold);
-  border-radius: 1rem;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.8), inset 0 1px 1px rgba(255,255,255,0.15);
-  backdrop-filter: blur(12px);
-  width: 100%;
-}
-
-.topbar {
-  padding: 0.75rem 1.25rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-.brand { display: flex; align-items: center; gap: 0.75rem; }
-.logo {
-  width: 42px;
-  height: 42px;
-  border-radius: 0.75rem;
-  display: grid;
-  place-items: center;
-  background: linear-gradient(135deg, var(--primary), var(--gold));
-  font-size: 1.4rem;
-  box-shadow: 0 0 15px var(--primary-glow);
-}
-
-.brand h1 {
-  margin: 0;
-  font-family: var(--font-disp);
-  font-size: 1.5rem;
-  letter-spacing: 0.05em;
-  background: linear-gradient(135deg, #ffffff, var(--gold));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-.brand p { margin: 0; color: var(--muted); font-size: 0.8rem; font-weight: 600; }
-
-.actions, .toolbar, .chips { display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: center; }
-
-.btn {
-  min-height: 36px;
-  padding: 0.4rem 0.85rem;
-  border-radius: 999px;
-  border: 1px solid var(--border-subtle);
-  background: var(--surface2);
-  color: #ffffff;
-  font-weight: 700;
-  font-size: 0.82rem;
-  transition: all 0.2s ease;
-}
-.btn:hover {
-  background: var(--surface3);
-  border-color: var(--gold);
-  box-shadow: 0 0 10px var(--gold-glow);
-}
-.btn-primary {
-  background: linear-gradient(135deg, var(--primary), #7c3aed);
-  color: #fff;
-  border: none;
-  box-shadow: 0 4px 12px var(--primary-glow);
-}
-.btn-accent {
-  background: linear-gradient(135deg, #d97706, var(--gold));
-  color: #05060a;
-  font-weight: 800;
-  border: none;
-  box-shadow: 0 4px 12px var(--gold-glow);
-}
-
-.pill {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.25rem 0.75rem;
-  border-radius: 999px;
-  background: var(--surface3);
-  border: 1px solid var(--border-gold);
-  color: var(--gold);
-  font-size: 0.78rem;
-  font-weight: 800;
-}
-
-.hero { padding: 1rem; display: grid; gap: 0.75rem; }
-.hero-grid { display: grid; grid-template-columns: 1fr auto; gap: 1rem; align-items: center; }
-
-.hero h2 { margin: 0; font-family: var(--font-disp); font-size: 1.4rem; color: #fff; }
-
-.status {
-  padding: 0.65rem 0.95rem;
-  border-radius: 0.75rem;
-  background: rgba(147, 51, 234, 0.18);
-  border: 1px solid rgba(147, 51, 234, 0.4);
-  font-size: 0.9rem;
-  color: #f3f0ff;
-}
-
-.forbidden-banner {
-  padding: 0.65rem 0.95rem;
-  border-radius: 0.75rem;
-  background: rgba(239, 68, 68, 0.2);
-  border: 1px solid rgba(239, 68, 68, 0.5);
-  font-size: 0.9rem;
-  color: #fca5a5;
-  display: none;
-}
-
-.stats { display: flex; gap: 0.5rem; }
-.stat {
-  padding: 0.5rem 0.8rem;
-  border-radius: 0.75rem;
-  background: var(--surface2);
-  border: 1px solid var(--border-subtle);
-  text-align: center;
-  min-width: 85px;
-}
-.stat span {
-  display: block;
-  color: var(--faint);
-  font-size: 0.68rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  font-weight: 800;
-}
-.stat strong { font-size: 1.15rem; color: var(--gold); font-family: var(--font-disp); font-weight: 900; }
-
-.main-grid { 
-  display: grid; 
-  grid-template-columns: 290px minmax(0, 1fr); 
-  gap: 0.75rem; 
-  width: 100%;
-}
-.main-grid > * { min-width: 0; }
-
-.stack { display: grid; gap: 0.75rem; align-content: start; }
-
-.label {
-  margin: 0 0 0.3rem;
-  color: var(--gold);
-  font-size: 0.72rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  font-weight: 800;
-  font-family: var(--font-disp);
-}
-
-.field { display: grid; gap: 0.35rem; }
-.field label { font-weight: 700; font-size: 0.82rem; color: #d8b4fe; }
-.field input, .field select, .players input {
-  min-height: 40px;
-  padding: 0.4rem 0.75rem;
-  border-radius: 0.6rem;
-  border: 1px solid var(--border-subtle);
-  background: #151a2e;
-  color: #ffffff !important;
-  font-weight: 600;
-  font-size: 0.9rem;
-  outline: none;
-  width: 100%;
-}
-.field input:focus, .field select:focus, .players input:focus {
-  border-color: var(--gold);
-  box-shadow: 0 0 8px var(--gold-glow);
-  background: #1a2038;
-}
-
-.toggle-field {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-top: 0.25rem;
-}
-.toggle-field input[type="checkbox"] {
-  width: 18px;
-  height: 18px;
-  accent-color: var(--gold);
-}
-
-.players { display: grid; gap: 0.45rem; }
-.player-row { display: grid; grid-template-columns: 38px 1fr; gap: 0.4rem; align-items: center; }
-.player-badge {
-  display: grid;
-  place-items: center;
-  height: 40px;
-  border-radius: 0.6rem;
-  background: #1e1b4b;
-  color: var(--gold);
-  font-weight: 800;
-  font-size: 0.8rem;
-  border: 1px solid var(--border-gold);
-}
-
-.table-card { padding: 0; overflow: hidden; }
-.table-head {
-  padding: 0.85rem 1.25rem;
-  border-bottom: 1px solid var(--border-subtle);
-  display: flex;
-  justify-content: space-between;
-  gap: 0.5rem;
-  align-items: center;
-}
-
-.table-wrap { width: 100%; overflow-x: auto; }
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  table-layout: fixed;
-}
-
-th, td {
-  padding: 0.4rem 0.1rem;
-  border-bottom: 1px solid var(--divider);
-  text-align: center;
-  vertical-align: middle;
-  font-size: 0.85rem;
-}
-
-thead th {
-  background: #0f1220;
-  position: sticky;
-  top: 0;
-  z-index: 4;
-  font-size: 0.75rem;
-  color: var(--muted);
-  font-weight: 800;
-  text-transform: uppercase;
-}
-
-th.player-header {
-  border-left: 1px solid var(--border-subtle);
-  border-right: 1px solid var(--border-subtle);
-  color: var(--gold);
-  font-family: var(--font-disp);
-  font-size: 0.95rem;
-  font-weight: 800;
-  padding: 0.5rem 0.2rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  background: #14182b;
-}
-
-tr.active-row { background: rgba(147, 51, 234, 0.18) !important; }
-tr.active-row .round-col {
-  background: rgba(147, 51, 234, 0.4) !important;
-  color: var(--gold) !important;
-  font-weight: 900;
-}
-
-.round-col {
-  width: 44px;
-  text-align: center;
-  background: rgba(18, 22, 38, 0.95);
-  color: #ffffff;
-  font-weight: 800;
-  font-size: 0.8rem;
-  font-family: var(--font-disp);
-}
-
-.mini {
-  width: 90%;
-  max-width: 38px;
-  height: 32px;
-  margin: 0 auto;
-  padding: 0;
-  border-radius: 0.4rem;
-  border: 1px solid var(--border-subtle);
-  background: #151a2e;
-  color: #ffffff;
-  text-align: center;
-  font-weight: 800;
-  font-size: 0.9rem;
-  outline: none;
-  display: block;
-}
-.mini:focus {
-  border-color: var(--gold);
-  background: var(--surface3);
-  box-shadow: 0 0 6px var(--gold-glow);
-}
-
-.score {
-  display: block;
-  width: 90%;
-  max-width: 46px;
-  margin: 0 auto;
-  padding: 0.25rem 0;
-  border-radius: 0.4rem;
-  font-weight: 900;
-  font-size: 0.85rem;
-  text-align: center;
-}
-.pos { background: var(--success-bg); color: var(--success); border: 1px solid rgba(52, 211, 153, 0.4); }
-.neg { background: var(--error-bg); color: var(--error); border: 1px solid rgba(251, 113, 133, 0.4); }
-.neu { background: var(--neutral-bg); color: var(--muted); border: 1px solid var(--border-subtle); }
-
-.tfoot th, .tfoot td {
-  font-weight: 900;
-  background: rgba(147, 51, 234, 0.25);
-  padding: 0.65rem 0.1rem;
-  font-size: 0.95rem;
-  color: var(--gold);
-  transition: all 0.3s ease;
-}
-
-.tfoot td.leader-cell {
-  background: linear-gradient(135deg, rgba(251, 191, 36, 0.4), rgba(217, 119, 6, 0.3)) !important;
-  color: #ffffff !important;
-  font-weight: 900 !important;
-  box-shadow: inset 0 0 10px var(--gold-glow);
-  border: 1px solid var(--gold) !important;
-}
-
-.leader-crown { display: inline-block; margin-right: 2px; font-size: 0.85rem; }
-
-/* Graph & Chart Section */
-.chart-card { padding: 1rem; }
-.chart-container { width: 100%; height: 220px; position: relative; }
-svg.score-chart { width: 100%; height: 100%; overflow: visible; }
-
-/* Modals & Overlays */
-.modal-overlay {
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(5, 6, 10, 0.85);
-  backdrop-filter: blur(10px);
-  z-index: 100;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 1rem;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
-}
-.modal-overlay.open { opacity: 1; pointer-events: auto; }
-
-.modal-body {
-  background: linear-gradient(145deg, #0f1220, #181d33);
-  border: 1px solid var(--gold);
-  border-radius: 1.25rem;
-  max-width: 600px;
-  width: 100%;
-  padding: 1.5rem;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.9);
-  position: relative;
-  max-height: 90vh;
-  overflow-y: auto;
-}
-
-canvas#confettiCanvas {
-  position: fixed;
-  top: 0; left: 0; width: 100vw; height: 100vh;
-  pointer-events: none;
-  z-index: 101;
-}
-
-.awards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.75rem; margin-top: 1rem; }
-.award-card {
-  background: var(--surface2);
-  border: 1px solid var(--border-gold);
-  padding: 0.85rem;
-  border-radius: 0.75rem;
-  text-align: center;
-}
-.award-icon { font-size: 2rem; margin-bottom: 0.25rem; }
-.award-title { font-family: var(--font-disp); color: var(--gold); font-size: 0.9rem; font-weight: 800; }
-.award-winner { font-size: 1.1rem; font-weight: 800; color: #fff; margin: 0.2rem 0; }
-.award-desc { font-size: 0.75rem; color: var(--faint); }
-
-.stats-table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
-.stats-table th, .stats-table td { padding: 0.5rem; text-align: left; border-bottom: 1px solid var(--divider); font-size: 0.85rem; }
-.stats-table th { color: var(--gold); font-family: var(--font-disp); }
-
-/* Mobile Layout */
-.mobile { display: none; }
-.mobile-card {
-  padding: 0.9rem;
-  border-radius: 0.75rem;
-  background: #121626;
-  border: 1px solid var(--border-subtle);
-  margin-bottom: 0.5rem;
-}
-.mobile-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 0.6rem;
-  padding-bottom: 0.4rem;
-  border-bottom: 1px solid var(--divider);
-}
-
-.mobile-scores { text-align: right; }
-.mobile-total-badge { font-size: 1rem; font-weight: 900; color: var(--gold); font-family: var(--font-disp); }
-.mobile-round-badge { font-size: 0.78rem; color: var(--muted); font-weight: 700; }
-
-.mobile-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
-
-.stepper {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: #1a2038;
-  border: 1px solid var(--border-gold);
-  border-radius: 0.6rem;
-  padding: 3px;
-}
-.btn-step {
-  width: 42px;
-  height: 40px;
-  border-radius: 0.4rem;
-  border: none;
-  background: #252d4e;
-  color: var(--gold);
-  font-size: 1.3rem;
-  font-weight: 900;
-  display: grid;
-  place-items: center;
-}
-.btn-step:active { background: var(--primary); color: #fff; }
-.step-val { font-weight: 900; font-size: 1.15rem; min-width: 28px; text-align: center; color: #ffffff; }
-
-.trick-alert {
-  padding: 0.6rem 0.75rem;
-  border-radius: 0.5rem;
-  font-size: 0.85rem;
-  font-weight: 800;
-  text-align: center;
-  margin-bottom: 0.75rem;
-}
-.alert-warn { background: rgba(251, 191, 36, 0.18); color: var(--gold); border: 1px solid var(--border-gold); }
-.alert-ok { background: var(--success-bg); color: var(--success); border: 1px solid rgba(52, 211, 153, 0.4); }
-
-@media(max-width: 1024px) {
-  .main-grid { grid-template-columns: 1fr; }
-  .hero-grid { grid-template-columns: 1fr; }
-  .stats { width: 100%; justify-content: space-between; }
-  .stat { flex: 1; }
-}
-@media(max-width: 720px) {
-  .desktop { display: none; }
-  .mobile { display: grid; gap: 0.75rem; }
-  body { padding: 0.4rem; }
-}
-</style>
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.9rem; }
+    th, td { padding: 8px; text-align: center; border-bottom: 1px solid #334155; }
+    th { color: var(--accent); }
+    .hidden { display: none; }
+  </style>
 </head>
 <body>
-<canvas id="confettiCanvas"></canvas>
 
-<div class="app">
-<header class="topbar">
-  <div class="brand">
-    <div class="logo">🔮</div>
-    <div>
-      <h1>Wizard Keeper Pro</h1>
-      <p>Local Scorekeeper & Analytics</p>
+  <h1>🧙‍♂️ Wizard Keeper</h1>
+
+  <!-- SETUP SCREEN -->
+  <div id="setup-screen" class="card">
+    <h2>Neues Spiel starten</h2>
+    <label for="player-count">Anzahl Spieler (3–6):</label>
+    <input type="number" id="player-count" min="3" max="6" value="4">
+    <button onclick="generatePlayerInputs()">Spieler eintragen</button>
+
+    <div id="player-names-container" class="hidden" style="margin-top: 15px;">
+      <div id="name-inputs"></div>
+      <button onclick="startGame()">Spiel starten</button>
     </div>
   </div>
-  <div class="actions">
-    <div class="pill" id="wakeLockInfo">💡 Screen On</div>
-    <div class="pill" id="saveInfo">⚡ Autosave aktiv</div>
-    <button class="btn" id="statsBtn">📊 Live Stats</button>
-    <button class="btn" id="themeBtn">🌙 / ☀️</button>
-    <button class="btn" id="csvBtn">📊 CSV</button>
-    <button class="btn btn-accent" id="resetBtn">🔮 Neu starten</button>
-  </div>
-</header>
 
-<section class="hero card">
-  <div class="hero-grid">
-    <div class="stack">
-      <div>
-        <p class="label">Rundenkontrolle</p>
-        <h2 id="titleOut">Wizard Abendrunde</h2>
-      </div>
-      <div class="status" id="statusBox">Bereit. Konfiguriere die Spieler und starte Runde 1.</div>
-      <div class="forbidden-banner" id="forbiddenBidBanner"></div>
-    </div>
-    <div class="stats">
-      <div class="stat"><span>Runde</span><strong id="statRound">1</strong></div>
-      <div class="stat"><span>Karten</span><strong id="statCards">1</strong></div>
-      <div class="stat"><span>Geber</span><strong id="statDealer">P1</strong></div>
-      <div class="stat"><span>Ansage</span><strong id="statBidder">P2</strong></div>
-    </div>
-  </div>
-  <div class="chips" id="meta"></div>
-</section>
-
-<div class="main-grid">
-  <aside class="card stack" style="padding: 1rem;">
-    <div><p class="label">Setup</p><h2>Optionen</h2></div>
-    <div class="toolbar">
-      <button class="btn btn-primary mode-btn" data-mode="classic">Classic</button>
-      <button class="btn mode-btn" data-mode="anniversary">30J Edition</button>
-    </div>
-    <div class="field"><label for="gameName">Partiename</label><input id="gameName" value="Wizard Abendrunde"></div>
-    <div class="field"><label for="playerCount">Spielerzahl</label><select id="playerCount"><option value="3">3 Spieler</option><option value="4" selected>4 Spieler</option><option value="5">5 Spieler</option><option value="6">6 Spieler</option></select></div>
-    <div class="field"><label for="maxRounds">Max. Runden</label><select id="maxRounds"></select></div>
-    <div class="field"><label for="currentRound">Fokus-Runde</label><select id="currentRound"></select></div>
-    <div class="field"><label for="dealerStart">Erster Geber</label><select id="dealerStart"></select></div>
+  <!-- GAME SCREEN -->
+  <div id="game-screen" class="card hidden">
+    <h2 id="round-header">Runde 1 (1 Karte)</h2>
     
-    <div class="field">
-      <label>Sonderregeln</label>
-      <div class="toggle-field">
-        <input type="checkbox" id="ruleForbiddenBid" checked />
-        <label for="ruleForbiddenBid" style="font-size:0.8rem; color:#fff;">Verbotene Ansage für letzten Ansager</label>
-      </div>
+    <!-- PHASE 1: ANSAGEN -->
+    <div id="bidding-phase">
+      <h3>1. Stich-Ansagen</h3>
+      <div id="bidding-inputs" class="grid"></div>
+      
+      <!-- Live Warnmeldung bezüglich Regelverstoß -->
+      <div id="rule-warning" class="alert-banner hidden"></div>
+      
+      <button id="btn-submit-bids" style="margin-top: 15px;" onclick="confirmBids()">Ansagen bestätigen</button>
     </div>
 
-    <div>
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.3rem;">
-        <p class="label" style="margin:0;">Spieler Namen</p>
-        <button class="btn" id="defaultNamesBtn" style="padding:0.2rem 0.5rem; font-size:0.7rem;">Zurücksetzen</button>
-      </div>
-      <div class="players" id="players"></div>
+    <!-- PHASE 2: ERGEBNISSE -->
+    <div id="result-phase" class="hidden">
+      <h3>2. Gemachte Stiche</h3>
+      <div id="result-inputs" class="grid"></div>
+      <div id="result-warning" class="alert-banner hidden"></div>
+      <button style="margin-top: 15px;" onclick="confirmResults()">Runde auswerten</button>
     </div>
-  </aside>
-
-  <main class="stack">
-    <!-- SVG Graph Card -->
-    <section class="card chart-card">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
-        <p class="label" style="margin:0;">Visueller Punkteverlauf</p>
-        <span style="font-size:0.75rem; color:var(--faint);">Echtzeit-Verlauf</span>
-      </div>
-      <div class="chart-container">
-        <svg id="scoreChart" class="score-chart"></svg>
-      </div>
-    </section>
-
-    <!-- Score Table -->
-    <section class="card table-card desktop">
-      <div class="table-head">
-        <div><p class="label">Übersicht</p><h2>Partietabelle (A = Ansage · S = Stiche · P = Punkte)</h2></div>
-        <div class="chips"><div class="pill">✦ ⌨️ Tab / Enter Navigation aktiv</div></div>
-      </div>
-      <div class="table-wrap"><table id="scoreTable"></table></div>
-    </section>
-
-    <!-- Mobile view -->
-    <section class="card mobile" style="padding: 1rem;">
-      <div style="display:flex; justify-content:space-between; align-items:center;">
-        <div><p class="label">Mobilfokus</p><h2>Runde <span id="mobileRoundTitle">1</span> eingeben</h2></div>
-      </div>
-      
-      <div id="trickValidation" class="trick-alert alert-ok">✓ Stichesumme stimmt</div>
-      <div id="mobileCards"></div>
-      
-      <div class="toolbar" style="margin-top:0.5rem;">
-        <button class="btn" id="prevBtn" style="flex:1;">← Vorherige</button>
-        <button class="btn btn-primary" id="nextBtn" style="flex:1;">Nächste →</button>
-      </div>
-    </section>
-  </main>
-</div>
-</div>
-
-<!-- Endgame Victory Modal -->
-<div class="modal-overlay" id="victoryModal">
-  <div class="modal-body" style="text-align:center;">
-    <h1 style="font-family:var(--font-disp); color:var(--gold); font-size:2rem; margin:0 0 0.5rem;">🎉 Partie Beendet! 🎉</h1>
-    <p style="color:var(--muted); margin-bottom:1rem;">Hier sind die feierlichen Auszeichnungen der Runde:</p>
-    
-    <div class="awards-grid" id="awardsGrid"></div>
-
-    <button class="btn btn-accent" id="closeVictoryBtn" style="margin-top:1.5rem; width:100%; min-height:44px;">Ergebnisse Schließen</button>
   </div>
-</div>
 
-<!-- Live Stats Modal -->
-<div class="modal-overlay" id="statsModal">
-  <div class="modal-body">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
-      <h2 style="font-family:var(--font-disp); color:var(--gold); margin:0;">📊 Live Spielstatistiken</h2>
-      <button class="btn" id="closeStatsBtn">✕</button>
-    </div>
-    <div id="statsModalContent"></div>
-  </div>
-</div>
-
-<script>
-const STORAGE_KEY = 'wizard-keeper-ghpages-v2';
-const defaults = ['Spieler 1', 'Spieler 2', 'Spieler 3', 'Spieler 4', 'Spieler 5', 'Spieler 6'];
-let memoryState = null;
-let mode = 'classic';
-let activeRound = 1;
-let wakeLock = null;
-
-const els = {
-  root: document.documentElement,
-  themeBtn: document.getElementById('themeBtn'),
-  csvBtn: document.getElementById('csvBtn'),
-  resetBtn: document.getElementById('resetBtn'),
-  statsBtn: document.getElementById('statsBtn'),
-  defaultNamesBtn: document.getElementById('defaultNamesBtn'),
-  prevBtn: document.getElementById('prevBtn'),
-  nextBtn: document.getElementById('nextBtn'),
-  gameName: document.getElementById('gameName'),
-  playerCount: document.getElementById('playerCount'),
-  maxRounds: document.getElementById('maxRounds'),
-  currentRound: document.getElementById('currentRound'),
-  dealerStart: document.getElementById('dealerStart'),
-  ruleForbiddenBid: document.getElementById('ruleForbiddenBid'),
-  players: document.getElementById('players'),
-  scoreTable: document.getElementById('scoreTable'),
-  mobileCards: document.getElementById('mobileCards'),
-  titleOut: document.getElementById('titleOut'),
-  statusBox: document.getElementById('statusBox'),
-  forbiddenBidBanner: document.getElementById('forbiddenBidBanner'),
-  meta: document.getElementById('meta'),
-  statRound: document.getElementById('statRound'),
-  statCards: document.getElementById('statCards'),
-  statDealer: document.getElementById('statDealer'),
-  statBidder: document.getElementById('statBidder'),
-  saveInfo: document.getElementById('saveInfo'),
-  wakeLockInfo: document.getElementById('wakeLockInfo'),
-  trickValidation: document.getElementById('trickValidation'),
-  mobileRoundTitle: document.getElementById('mobileRoundTitle'),
-  modeBtns: [...document.querySelectorAll('.mode-btn')],
-  scoreChart: document.getElementById('scoreChart'),
-  victoryModal: document.getElementById('victoryModal'),
-  closeVictoryBtn: document.getElementById('closeVictoryBtn'),
-  awardsGrid: document.getElementById('awardsGrid'),
-  statsModal: document.getElementById('statsModal'),
-  closeStatsBtn: document.getElementById('closeStatsBtn'),
-  statsModalContent: document.getElementById('statsModalContent')
-};
-
-/* --- Screen Wake Lock --- */
-async function requestWakeLock() {
-  if ('wakeLock' in navigator) {
-    try {
-      wakeLock = await navigator.wakeLock.request('screen');
-      els.wakeLockInfo.textContent = '💡 Screen On';
-    } catch (err) {
-      els.wakeLockInfo.textContent = '💡 Screen Normal';
-    }
-  } else {
-    els.wakeLockInfo.textContent = '💡 Screen Normal';
-  }
-}
-document.addEventListener('visibilitychange', () => {
-  if (wakeLock !== null && document.visibilityState === 'visible') requestWakeLock();
-});
-requestWakeLock();
-
-/* --- Storage & Helpers --- */
-function storageAvailable() {
-  try { const t = '__t'; localStorage.setItem(t, '1'); localStorage.removeItem(t); return true; } catch(e) { return false; }
-}
-
-function saveState() {
-  const state = serializeState();
-  memoryState = state;
-  if (storageAvailable()) {
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); els.saveInfo.textContent = '⚡ Autosave aktiv'; return; } catch(e) {}
-  }
-  els.saveInfo.textContent = 'Autosave: Tab-Memory';
-}
-
-function loadState() {
-  if (storageAvailable()) {
-    try { const raw = localStorage.getItem(STORAGE_KEY); if (raw) return JSON.parse(raw); } catch(e) {}
-  }
-  return memoryState;
-}
-
-function maxRoundsForPlayers(c) { return Math.floor(60 / c); }
-function names() { return [...els.players.querySelectorAll('input')].map((i, idx) => i.value.trim() || defaults[idx]); }
-function dealerIndex(round) { return (Number(els.dealerStart.value) + round - 1) % names().length; }
-function bidderIndex(round) { return (dealerIndex(round) + 1) % names().length; }
-
-function scoreWizard(bidStr, trickStr) {
-  if (bidStr === '' || trickStr === '' || bidStr === null || trickStr === null) {
-    return { score: 0, isPlayed: false };
-  }
-  const b = Number(bidStr);
-  const t = Number(trickStr);
-  if (isNaN(b) || isNaN(t)) return { score: 0, isPlayed: false };
-
-  const s = (b === t) ? (20 + t * 10) : (-10 * Math.abs(b - t));
-  return { score: s, isPlayed: true, exact: b === t, bid: b, tricks: t };
-}
-
-function fillSelect(select, max, selected, formatter) {
-  select.innerHTML = '';
-  for (let i = 1; i <= max; i++) {
-    const o = document.createElement('option');
-    o.value = String(i);
-    o.textContent = formatter(i);
-    if (i === selected) o.selected = true;
-    select.appendChild(o);
-  }
-}
-
-function syncSetup() {
-  const c = Number(els.playerCount.value);
-  const max = maxRoundsForPlayers(c);
-  const selectedMax = Math.min(Number(els.maxRounds.value || max), max);
-  
-  fillSelect(els.maxRounds, max, selectedMax, i => `${i} Runden`);
-  fillSelect(els.currentRound, selectedMax, activeRound, i => `Runde ${i}`);
-  
-  const currentDealer = Math.min(Number(els.dealerStart.value || 0), c - 1);
-  els.dealerStart.innerHTML = '';
-  for (let i = 0; i < c; i++) {
-    const o = document.createElement('option');
-    o.value = String(i);
-    o.textContent = defaults[i];
-    if (i === currentDealer) o.selected = true;
-    els.dealerStart.appendChild(o);
-  }
-}
-
-function renderPlayers(existing = []) {
-  const c = Number(els.playerCount.value);
-  els.players.innerHTML = '';
-  for (let i = 0; i < c; i++) {
-    const row = document.createElement('div');
-    row.className = 'player-row';
-    const badge = document.createElement('div');
-    badge.className = 'player-badge';
-    badge.textContent = `P${i + 1}`;
-    const input = document.createElement('input');
-    input.value = existing[i] || defaults[i];
-    input.addEventListener('input', () => { syncDealerNames(); buildTable(loadState()?.rows || null); saveState(); });
-    row.append(badge, input);
-    els.players.appendChild(row);
-  }
-  syncDealerNames();
-}
-
-function syncDealerNames() {
-  const n = names();
-  [...els.dealerStart.options].forEach((o, idx) => { if(n[idx]) o.textContent = n[idx]; });
-}
-
-function setActiveRound(r) {
-  const max = Number(els.maxRounds.value) || 1;
-  activeRound = Math.max(1, Math.min(r, max));
-  els.currentRound.value = String(activeRound);
-  els.mobileRoundTitle.textContent = String(activeRound);
-  
-  [...els.scoreTable.querySelectorAll('tbody tr')].forEach(tr => {
-    if (Number(tr.dataset.round) === activeRound) {
-      tr.classList.add('active-row');
-    } else {
-      tr.classList.remove('active-row');
-    }
-  });
-
-  recalc();
-  renderMobile();
-  saveState();
-}
-
-function buildTable(savedRows = null) {
-  const n = names();
-  const rounds = Number(els.maxRounds.value);
-  
-  els.titleOut.textContent = els.gameName.value.trim() || 'Wizard Runde';
-  els.meta.innerHTML = '';
-  [mode === 'classic' ? 'Classic' : '30J Edition', `${n.length} Spieler`, `${rounds} Runden`].forEach(t => {
-    const c = document.createElement('div');
-    c.className = 'pill';
-    c.textContent = t;
-    els.meta.appendChild(c);
-  });
-
-  const thead = document.createElement('thead');
-  const tr1 = document.createElement('tr');
-  
-  const thR = document.createElement('th');
-  thR.rowSpan = 2;
-  thR.className = 'round-col';
-  thR.textContent = 'R';
-  tr1.appendChild(thR);
-  
-  n.forEach(name => {
-    const th = document.createElement('th');
-    th.colSpan = 3;
-    th.className = 'player-header';
-    th.textContent = name;
-    tr1.appendChild(th);
-  });
-
-  const tr2 = document.createElement('tr');
-  n.forEach(() => {
-    ['A', 'S', 'P'].forEach(label => {
-      const th = document.createElement('th');
-      th.textContent = label;
-      tr2.appendChild(th);
-    });
-  });
-  thead.append(tr1, tr2);
-
-  const tbody = document.createElement('tbody');
-  for (let round = 1; round <= rounds; round++) {
-    const tr = document.createElement('tr');
-    tr.dataset.round = String(round);
-    if (round === activeRound) tr.classList.add('active-row');
-
-    const th = document.createElement('th');
-    th.className = 'round-col';
-    th.scope = 'row';
-    th.textContent = `R${round}`;
-
-    tr.append(th);
-
-    n.forEach((_, idx) => {
-      const saved = savedRows?.[round - 1]?.players?.[idx] || {};
-      
-      const bid = document.createElement('input');
-      bid.type = 'number';
-      bid.min = '0';
-      bid.max = String(round);
-      bid.value = saved.bid !== undefined ? saved.bid : '';
-      bid.className = 'mini bid';
-
-      const trick = document.createElement('input');
-      trick.type = 'number';
-      trick.min = '0';
-      trick.max = String(round);
-      trick.value = saved.tricks !== undefined ? saved.tricks : '';
-      trick.className = 'mini trick';
-
-      const score = document.createElement('span');
-      score.className = 'score neu';
-      score.dataset.score = 'true';
-      score.textContent = '—';
-
-      [bid, trick].forEach(el => {
-        el.addEventListener('input', () => { recalc(); saveState(); renderMobile(); });
-        el.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter') {
-            e.preventDefault();
-            const allMinis = [...els.scoreTable.querySelectorAll('input.mini')];
-            const currentIdx = allMinis.indexOf(e.target);
-            if (currentIdx > -1 && currentIdx < allMinis.length - 1) {
-              allMinis[currentIdx + 1].focus();
-              allMinis[currentIdx + 1].select();
-            }
-          }
-        });
-        el.addEventListener('focus', (e) => e.target.select());
-      });
-
-      const td1 = document.createElement('td'); td1.appendChild(bid);
-      const td2 = document.createElement('td'); td2.appendChild(trick);
-      const tdS = document.createElement('td'); tdS.appendChild(score);
-      
-      tr.append(td1, td2, tdS);
-    });
-
-    tbody.appendChild(tr);
-  }
-
-  const tfoot = document.createElement('tfoot');
-  const trf = document.createElement('tr');
-  trf.className = 'tfoot';
-  const thA = document.createElement('th'); thA.className = 'round-col'; thA.textContent = 'Σ';
-  trf.append(thA);
-
-  n.forEach(() => {
-    ['—', '—'].forEach(v => {
-      const td = document.createElement('td'); td.textContent = v; trf.appendChild(td);
-    });
-    const total = document.createElement('td');
-    total.dataset.total = 'true';
-    total.textContent = '0';
-    trf.appendChild(total);
-  });
-  tfoot.appendChild(trf);
-
-  els.scoreTable.innerHTML = '';
-  els.scoreTable.append(thead, tbody, tfoot);
-  
-  recalc();
-  renderMobile();
-}
-
-function calculateTotalsUpToRound(upToRound) {
-  const n = names();
-  const totals = Array(n.length).fill(0);
-  const rows = [...els.scoreTable.querySelectorAll('tbody tr')].slice(0, upToRound);
-
-  rows.forEach(row => {
-    const bids = [...row.querySelectorAll('.bid')];
-    const tricks = [...row.querySelectorAll('.trick')];
-
-    bids.forEach((bEl, idx) => {
-      const res = scoreWizard(bEl.value, tricks[idx].value);
-      if (res.isPlayed) {
-        totals[idx] += res.score;
-      }
-    });
-  });
-  return totals;
-}
-
-/* --- Smart Rule Engine: Verbotene Ansage --- */
-function checkForbiddenBid() {
-  if (!els.ruleForbiddenBid.checked) {
-    els.forbiddenBidBanner.style.display = 'none';
-    return;
-  }
-
-  const n = names();
-  const currentR = activeRound;
-  const dIdx = dealerIndex(currentR);
-  const lastBidderIdx = dIdx; // Der Geber ist immer der letzte Ansager
-  const lastBidderName = n[lastBidderIdx];
-
-  const row = els.scoreTable.querySelector(`tbody tr[data-round="${currentR}"]`);
-  if (!row) return;
-
-  const bids = [...row.querySelectorAll('.bid')];
-  
-  let filledCount = 0;
-  let sumBids = 0;
-  bids.forEach((bEl, idx) => {
-    if (idx !== lastBidderIdx && bEl.value !== '') {
-      filledCount++;
-      sumBids += Number(bEl.value);
-    }
-  });
-
-  if (filledCount === n.length - 1) {
-    const forbiddenVal = currentR - sumBids;
-    if (forbiddenVal >= 0 && forbiddenVal <= currentR) {
-      els.forbiddenBidBanner.style.display = 'block';
-      els.forbiddenBidBanner.innerHTML = `⛔ <strong>Regel-Verbot:</strong> ${lastBidderName} darf als letzter Ansager <strong>nicht ${forbiddenVal}</strong> ansagen!`;
-    } else {
-      els.forbiddenBidBanner.style.display = 'none';
-    }
-  } else {
-    els.forbiddenBidBanner.style.display = 'none';
-  }
-}
-
-function updateRoundState(playerNames = names(), totals = null) {
-  const current = activeRound;
-  const dealer = playerNames[dealerIndex(current)] || defaults[0];
-  const bidder = playerNames[bidderIndex(current)] || defaults[1] || defaults[0];
-
-  const best = totals ? Math.max(...totals) : 0;
-  const leaders = totals ? playerNames.filter((_, idx) => totals[idx] === best) : [];
-
-  els.statusBox.innerHTML = `<strong>Runde ${current} aktiv.</strong> (${current} Karte${current > 1 ? 'n' : ''}). Geber: <strong>${dealer}</strong> · Ansage: <strong>${bidder}</strong>. ${totals ? (leaders.length === 1 ? `🏆 <strong>${leaders[0]}</strong> führt mit ${best} Pkt.` : `Gleichstand: ${best} Pkt.`) : ''}`;
-
-  els.statRound.textContent = String(current);
-  els.statCards.textContent = String(current);
-  els.statDealer.textContent = dealer;
-  els.statBidder.textContent = bidder;
-
-  checkForbiddenBid();
-}
-
-function recalc() {
-  const rows = [...els.scoreTable.querySelectorAll('tbody tr')];
-  const n = names();
-  const totals = Array(n.length).fill(0);
-  let hasActiveScores = false;
-  let allMaxRoundTricksFilled = true;
-
-  const maxRounds = Number(els.maxRounds.value);
-
-  rows.forEach(row => {
-    const rNum = Number(row.dataset.round);
-    const bids = [...row.querySelectorAll('.bid')];
-    const tricks = [...row.querySelectorAll('.trick')];
-    const scores = [...row.querySelectorAll('[data-score]')];
-
-    bids.forEach((bEl, idx) => {
-      const res = scoreWizard(bEl.value, tricks[idx].value);
-      if (res.isPlayed) {
-        hasActiveScores = true;
-        totals[idx] += res.score;
-        scores[idx].textContent = String(res.score);
-        scores[idx].className = 'score ' + (res.score > 0 ? 'pos' : res.score < 0 ? 'neg' : 'neu');
-      } else {
-        scores[idx].textContent = '—';
-        scores[idx].className = 'score neu';
-        if (rNum === maxRounds) allMaxRoundTricksFilled = false;
-      }
-    });
-  });
-
-  const maxTotal = Math.max(...totals);
-  const totalCells = [...els.scoreTable.querySelectorAll('[data-total]')];
-
-  totalCells.forEach((td, idx) => {
-    const isLeader = hasActiveScores && totals[idx] === maxTotal;
-    if (isLeader) {
-      td.className = 'leader-cell';
-      td.innerHTML = `<span class="leader-crown">👑</span>${totals[idx]}`;
-    } else {
-      td.className = '';
-      td.textContent = String(totals[idx]);
-    }
-  });
-
-  updateRoundState(n, totals);
-  renderChart();
-
-  // Trigger Endgame Siegerehrung when final round is fully completed
-  if (allMaxRoundTricksFilled && maxRounds > 0 && hasActiveScores) {
-    triggerEndgame(totals);
-  }
-}
-
-/* --- SVG Graph Renderer --- */
-function renderChart() {
-  const svg = els.scoreChart;
-  if (!svg) return;
-
-  const n = names();
-  const rounds = Number(els.maxRounds.value);
-  const width = svg.clientWidth || 800;
-  const height = 220;
-  const padding = 35;
-
-  let history = n.map(() => [0]);
-  let maxPlayedRound = 0;
-
-  const rows = [...els.scoreTable.querySelectorAll('tbody tr')];
-  rows.forEach((row, rIdx) => {
-    const bids = [...row.querySelectorAll('.bid')];
-    const tricks = [...row.querySelectorAll('.trick')];
-    let roundPlayed = false;
-
-    n.forEach((_, pIdx) => {
-      const res = scoreWizard(bids[pIdx].value, tricks[pIdx].value);
-      if (res.isPlayed) roundPlayed = true;
-    });
-
-    if (roundPlayed) {
-      maxPlayedRound = rIdx + 1;
-      n.forEach((_, pIdx) => {
-        const res = scoreWizard(bids[pIdx].value, tricks[pIdx].value);
-        const prev = history[pIdx][history[pIdx].length - 1];
-        history[pIdx].push(prev + (res.isPlayed ? res.score : 0));
-      });
-    }
-  });
-
-  if (maxPlayedRound === 0) {
-    svg.innerHTML = `<text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#cbd5e1" font-size="13">Noch keine Daten für den Punkteverlauf vorhanden.</text>`;
-    return;
-  }
-
-  let allScores = history.flatMap(h => h.slice(0, maxPlayedRound + 1));
-  let minScore = Math.min(0, ...allScores);
-  let maxScore = Math.max(20, ...allScores);
-  if (minScore === maxScore) maxScore += 10;
-
-  const colors = ['#fbbf24', '#9333ea', '#34d399', '#38bdf8', '#fb7185', '#a855f7'];
-
-  let svgContent = `<line x1="${padding}" y1="${height - padding}" x2="${width - padding}" y2="${height - padding}" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>`;
-
-  // Draw 0-line if applicable
-  const yZero = height - padding - ((0 - minScore) / (maxScore - minScore)) * (height - 2 * padding);
-  if (yZero >= padding && yZero <= height - padding) {
-    svgContent += `<line x1="${padding}" y1="${yZero}" x2="${width - padding}" y2="${yZero}" stroke="rgba(255,255,255,0.3)" stroke-dasharray="4" stroke-width="1"/>`;
-  }
-
-  n.forEach((name, pIdx) => {
-    const pScores = history[pIdx].slice(0, maxPlayedRound + 1);
-    let points = [];
-    pScores.forEach((s, r) => {
-      const x = padding + (r / Math.max(1, rounds)) * (width - 2 * padding);
-      const y = height - padding - ((s - minScore) / (maxScore - minScore)) * (height - 2 * padding);
-      points.push({x, y, s, r});
-    });
-
-    const pathD = points.map((pt, idx) => `${idx === 0 ? 'M' : 'L'} ${pt.x} ${pt.y}`).join(' ');
-    const color = colors[pIdx % colors.length];
-
-    svgContent += `<path d="${pathD}" fill="none" stroke="${color}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>`;
-    points.forEach(pt => {
-      svgContent += `<circle cx="${pt.x}" cy="${pt.y}" r="4" fill="${color}"><title>${name} (R${pt.r}): ${pt.s} Pkt.</title></circle>`;
-    });
-  });
-
-  svg.innerHTML = svgContent;
-}
-
-/* --- Gamification & Siegerehrung --- */
-function triggerEndgame(totals) {
-  const n = names();
-  const maxScore = Math.max(...totals);
-  const champIdx = totals.indexOf(maxScore);
-
-  // Compute stats for awards
-  let stats = n.map(() => ({ bidsCount: 0, hits: 0, zeroBids: 0, totalScore: 0, totalBids: 0 }));
-  const rows = [...els.scoreTable.querySelectorAll('tbody tr')];
-
-  rows.forEach(row => {
-    const bids = [...row.querySelectorAll('.bid')];
-    const tricks = [...row.querySelectorAll('.trick')];
-    n.forEach((_, idx) => {
-      const res = scoreWizard(bids[idx].value, tricks[idx].value);
-      if (res.isPlayed) {
-        stats[idx].totalScore += res.score;
-        stats[idx].totalBids += res.bid;
-        stats[idx].bidsCount++;
-        if (res.exact) stats[idx].hits++;
-        if (res.bid === 0) stats[idx].zeroBids++;
-      }
-    });
-  });
-
-  // Awards
-  let bestAccuracyPlayer = n[0], maxAcc = -1;
-  let bestZockerPlayer = n[0], maxBids = -1;
-  let bestSafePlayer = n[0], maxZeros = -1;
-
-  stats.forEach((st, idx) => {
-    const acc = st.bidsCount > 0 ? (st.hits / st.bidsCount) : 0;
-    if (acc > maxAcc) { maxAcc = acc; bestAccuracyPlayer = n[idx]; }
-    if (st.totalBids > maxBids) { maxBids = st.totalBids; bestZockerPlayer = n[idx]; }
-    if (st.zeroBids > maxZeros) { maxZeros = st.zeroBids; bestSafePlayer = n[idx]; }
-  });
-
-  els.awardsGrid.innerHTML = `
-    <div class="award-card">
-      <div class="award-icon">👑</div>
-      <div class="award-title">Der Champion</div>
-      <div class="award-winner">${n[champIdx]}</div>
-      <div class="award-desc">${maxScore} Punkte Gesamtsieg</div>
-    </div>
-    <div class="award-card">
-      <div class="award-icon">🎯</div>
-      <div class="award-title">Präzisions-Meister</div>
-      <div class="award-winner">${bestAccuracyPlayer}</div>
-      <div class="award-desc">${Math.round(maxAcc * 100)}% Ansagen-Trefferquote</div>
-    </div>
-    <div class="award-card">
-      <div class="award-icon">🎲</div>
-      <div class="award-title">Der Zocker</div>
-      <div class="award-winner">${bestZockerPlayer}</div>
-      <div class="award-desc">${maxBids} Stiche insgesamt angesagt</div>
-    </div>
-    <div class="award-card">
-      <div class="award-icon">🛡️</div>
-      <div class="award-title">Sicherheitsspieler</div>
-      <div class="award-winner">${bestSafePlayer}</div>
-      <div class="award-desc">${maxZeros} mal 0 Stiche angesagt</div>
-    </div>
-  `;
-
-  els.victoryModal.classList.add('open');
-  launchConfetti();
-}
-
-/* --- Canvas Confetti System --- */
-function launchConfetti() {
-  const canvas = document.getElementById('confettiCanvas');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-
-  let particles = [];
-  const colors = ['#fbbf24', '#9333ea', '#34d399', '#fb7185', '#38bdf8'];
-  for (let i = 0; i < 100; i++) {
-    particles.push({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height - canvas.height,
-      r: Math.random() * 6 + 4,
-      d: Math.random() * 10 + 10,
-      color: colors[Math.floor(Math.random() * colors.length)],
-      tilt: Math.random() * 10 - 10,
-      tiltAngleIncremental: Math.random() * 0.07 + 0.05,
-      tiltAngle: 0
-    });
-  }
-
-  function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    let active = false;
-    particles.forEach((p) => {
-      p.tiltAngle += p.tiltAngleIncremental;
-      p.y += (Math.cos(p.d) + 1 + p.r / 2) / 2;
-      p.x += Math.sin(p.d);
-      p.tilt = Math.sin(p.tiltAngle) * 15;
-      if (p.y < canvas.height) active = true;
-
-      ctx.beginPath();
-      ctx.lineWidth = p.r;
-      ctx.strokeStyle = p.color;
-      ctx.moveTo(p.x + p.tilt + p.r / 2, p.y);
-      ctx.lineTo(p.x + p.tilt, p.y + p.tilt + p.r / 2);
-      ctx.stroke();
-    });
-    if (active) requestAnimationFrame(draw);
-  }
-  draw();
-}
-
-/* --- Live Stats Dashboard --- */
-function renderLiveStatsModal() {
-  const n = names();
-  const rows = [...els.scoreTable.querySelectorAll('tbody tr')];
-  let pStats = n.map(() => ({ total: 0, played: 0, hits: 0, maxGain: 0, maxLoss: 0 }));
-
-  rows.forEach(row => {
-    const bids = [...row.querySelectorAll('.bid')];
-    const tricks = [...row.querySelectorAll('.trick')];
-    n.forEach((_, idx) => {
-      const res = scoreWizard(bids[idx].value, tricks[idx].value);
-      if (res.isPlayed) {
-        pStats[idx].played++;
-        pStats[idx].total += res.score;
-        if (res.exact) pStats[idx].hits++;
-        if (res.score > pStats[idx].maxGain) pStats[idx].maxGain = res.score;
-        if (res.score < pStats[idx].maxLoss) pStats[idx].maxLoss = res.score;
-      }
-    });
-  });
-
-  let html = `
-    <table class="stats-table">
+  <!-- SCOREBOARD -->
+  <div id="scoreboard-screen" class="card hidden">
+    <h2>Punktestand</h2>
+    <table>
       <thead>
-        <tr>
-          <th>Spieler</th>
-          <th>Gesamt</th>
-          <th>Treffer quote</th>
-          <th>Ø / Runde</th>
-          <th>Max +</th>
-          <th>Max −</th>
-        </tr>
+        <tr id="table-head"></tr>
       </thead>
-      <tbody>
-  `;
+      <tbody id="table-body"></tbody>
+    </table>
+    <button class="btn-secondary" onclick="resetGame()">Neues Spiel</button>
+  </div>
 
-  n.forEach((name, idx) => {
-    const st = pStats[idx];
-    const acc = st.played > 0 ? Math.round((st.hits / st.played) * 100) : 0;
-    const avg = st.played > 0 ? (st.total / st.played).toFixed(1) : '0.0';
-    html += `
-      <tr>
-        <td><strong>${name}</strong></td>
-        <td style="color:var(--gold); font-weight:800;">${st.total}</td>
-        <td>${acc}% (${st.hits}/${st.played})</td>
-        <td>${avg}</td>
-        <td style="color:var(--success);">${st.maxGain > 0 ? '+' + st.maxGain : 0}</td>
-        <td style="color:var(--error);">${st.maxLoss}</td>
-      </tr>
-    `;
-  });
-
-  html += `</tbody></table>`;
-  els.statsModalContent.innerHTML = html;
-  els.statsModal.classList.add('open');
-}
-
-function renderMobile() {
-  const current = activeRound;
-  const row = els.scoreTable.querySelector(`tbody tr[data-round="${current}"]`);
-  if (!row) return;
-
-  const n = names();
-  const bids = row.querySelectorAll('.bid');
-  const tricks = row.querySelectorAll('.trick');
-  const scores = row.querySelectorAll('[data-score]');
-  const currentTotals = calculateTotalsUpToRound(current);
-
-  let totalTricksEntered = 0;
-  let filledTricks = 0;
-  tricks.forEach(t => {
-    if (t.value !== '') {
-      totalTricksEntered += Number(t.value);
-      filledTricks++;
-    }
-  });
-
-  if (filledTricks === n.length) {
-    if (totalTricksEntered === current) {
-      els.trickValidation.className = 'trick-alert alert-ok';
-      els.trickValidation.textContent = `✓ Stichesumme korrekt (${totalTricksEntered}/${current})`;
-    } else {
-      els.trickValidation.className = 'trick-alert alert-warn';
-      els.trickValidation.textContent = `⚠️ Stichesumme ist ${totalTricksEntered}, müsste aber ${current} sein!`;
-    }
-  } else {
-    els.trickValidation.className = 'trick-alert alert-warn';
-    els.trickValidation.textContent = `Eingetragen: ${totalTricksEntered} von ${current} Stichen`;
-  }
-
-  els.mobileCards.innerHTML = '';
-  n.forEach((name, idx) => {
-    const card = document.createElement('div');
-    card.className = 'mobile-card';
-    
-    const head = document.createElement('div');
-    head.className = 'mobile-head';
-    
-    const roundScoreStr = scores[idx].textContent !== '—' ? `${scores[idx].textContent} Pkt. (Runde)` : 'Keine Wertung';
-    
-    head.innerHTML = `
-      <div>
-        <div class="label">P${idx + 1}</div>
-        <strong style="font-size:1.05rem; color:#fff;">${name}</strong>
-      </div>
-      <div class="mobile-scores">
-        <div class="mobile-total-badge">Gesamt: ${currentTotals[idx]} Pkt.</div>
-        <div class="mobile-round-badge">${roundScoreStr}</div>
-      </div>
-    `;
-
-    const createStepper = (inputEl) => {
-      const wrap = document.createElement('div');
-      wrap.className = 'stepper';
-      
-      const btnMinus = document.createElement('button');
-      btnMinus.className = 'btn-step';
-      btnMinus.textContent = '−';
-      btnMinus.type = 'button';
-      btnMinus.onclick = () => {
-        let val = inputEl.value === '' ? 0 : Number(inputEl.value);
-        if (val > 0) {
-          inputEl.value = String(val - 1);
-          recalc();
-          saveState();
-          renderMobile();
-        }
-      };
-
-      const valDisplay = document.createElement('span');
-      valDisplay.className = 'step-val';
-      valDisplay.textContent = inputEl.value === '' ? '—' : inputEl.value;
-
-      const btnPlus = document.createElement('button');
-      btnPlus.className = 'btn-step';
-      btnPlus.textContent = '+';
-      btnPlus.type = 'button';
-      btnPlus.onclick = () => {
-        let val = inputEl.value === '' ? -1 : Number(inputEl.value);
-        if (val < current) {
-          inputEl.value = String(val + 1);
-          recalc();
-          saveState();
-          renderMobile();
-        }
-      };
-
-      wrap.append(btnMinus, valDisplay, btnPlus);
-      return wrap;
+  <script>
+    let state = {
+      players: [],
+      currentRound: 1,
+      maxRounds: 0,
+      bids: [],
+      scores: {}, // { SpielerName: gesamtPunkte }
+      history: [] // Runden-Protokoll
     };
 
-    const grid = document.createElement('div');
-    grid.className = 'mobile-grid';
+    // Spiel-Initialisierung
+    function generatePlayerInputs() {
+      const count = parseInt(document.getElementById('player-count').value);
+      const container = document.getElementById('name-inputs');
+      container.innerHTML = '';
 
-    const f1 = document.createElement('div');
-    f1.className = 'field';
-    f1.innerHTML = '<label>Ansage</label>';
-    f1.appendChild(createStepper(bids[idx]));
+      for (let i = 1; i <= count; i++) {
+        container.innerHTML += `
+          <label>Spieler ${i}:</label>
+          <input type="text" class="player-name-input" value="Spieler ${i}">
+        `;
+      }
+      document.getElementById('player-names-container').classList.remove('hidden');
+    }
 
-    const f2 = document.createElement('div');
-    f2.className = 'field';
-    f2.innerHTML = '<label>Stiche</label>';
-    f2.appendChild(createStepper(tricks[idx]));
+    function startGame() {
+      const inputs = document.querySelectorAll('.player-name-input');
+      state.players = Array.from(inputs).map(i => i.value.trim() || 'Unbenannt');
+      state.maxRounds = Math.floor(60 / state.players.length);
+      state.currentRound = 1;
+      state.history = [];
+      
+      state.players.forEach(p => state.scores[p] = 0);
 
-    grid.append(f1, f2);
-    card.append(head, grid);
-    els.mobileCards.appendChild(card);
-  });
-}
+      document.getElementById('setup-screen').classList.add('hidden');
+      document.getElementById('game-screen').classList.remove('hidden');
+      document.getElementById('scoreboard-screen').classList.remove('hidden');
 
-function serializeState() {
-  const n = names();
-  const rows = [...els.scoreTable.querySelectorAll('tbody tr')].map(row => ({
-    round: Number(row.dataset.round),
-    players: n.map((_, idx) => ({
-      bid: row.querySelectorAll('.bid')[idx]?.value ?? '',
-      tricks: row.querySelectorAll('.trick')[idx]?.value ?? ''
-    }))
-  }));
-  return {
-    mode,
-    theme: els.root.getAttribute('data-theme') || 'dark',
-    gameName: els.gameName.value,
-    playerCount: Number(els.playerCount.value),
-    maxRounds: Number(els.maxRounds.value),
-    currentRound: activeRound,
-    dealerStart: Number(els.dealerStart.value),
-    ruleForbiddenBid: els.ruleForbiddenBid.checked,
-    playerNames: n,
-    rows
-  };
-}
+      renderTableHeaders();
+      startRound();
+    }
 
-function applyState(state) {
-  if (!state) return false;
-  mode = state.mode || 'classic';
-  activeRound = state.currentRound || 1;
-  els.root.setAttribute('data-theme', state.theme || 'dark');
-  els.gameName.value = state.gameName || 'Wizard Abendrunde';
-  els.playerCount.value = String(state.playerCount || 4);
-  els.ruleForbiddenBid.checked = state.ruleForbiddenBid !== undefined ? state.ruleForbiddenBid : true;
+    // Runden-Steuerung
+    function startRound() {
+      const cardsInRound = state.currentRound;
+      document.getElementById('round-header').innerText = `Runde ${state.currentRound} von ${state.maxRounds} (${cardsInRound} ${cardsInRound === 1 ? 'Karte' : 'Karten'})`;
+      
+      document.getElementById('bidding-phase').classList.remove('hidden');
+      document.getElementById('result-phase').classList.add('hidden');
+      document.getElementById('rule-warning').classList.add('hidden');
 
-  syncSetup();
-  renderPlayers(state.playerNames || []);
-  
-  els.maxRounds.value = String(state.maxRounds || maxRoundsForPlayers(Number(els.playerCount.value)));
-  fillSelect(els.currentRound, Number(els.maxRounds.value), activeRound, i => `Runde ${i}`);
-  
-  els.dealerStart.value = String(Math.min(state.dealerStart || 0, Number(els.playerCount.value) - 1));
-  els.modeBtns.forEach(btn => btn.classList.toggle('btn-primary', btn.dataset.mode === mode));
-  
-  buildTable(state.rows || null);
-  setActiveRound(activeRound);
-  return true;
-}
+      // Bidding Inputs erzeugen
+      const bidsDiv = document.getElementById('bidding-inputs');
+      bidsDiv.innerHTML = '';
+      
+      state.players.forEach((player, idx) => {
+        bidsDiv.innerHTML += `
+          <div class="player-input-group">
+            <label>${player} ${idx === state.players.length - 1 ? '👑 (Letzter)' : ''}</label>
+            <input type="number" min="0" max="${cardsInRound}" class="bid-input" data-index="${idx}" oninput="validateBids()">
+          </div>
+        `;
+      });
 
-function resetAll() {
-  try { localStorage.removeItem(STORAGE_KEY); } catch(e){}
-  memoryState = null;
-  location.reload();
-}
+      validateBids();
+    }
 
-/* Event Listeners */
-els.themeBtn.addEventListener('click', () => {
-  els.root.setAttribute('data-theme', els.root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
-  saveState();
-});
+    // CORE LOGIK: Dynamische Validierung für den letzten Spieler
+    function validateBids() {
+      const inputs = Array.from(document.querySelectorAll('.bid-input'));
+      const cardsInRound = state.currentRound;
+      const totalPlayers = state.players.length;
+      const warningBox = document.getElementById('rule-warning');
+      const submitBtn = document.getElementById('btn-submit-bids');
 
-els.csvBtn.addEventListener('click', () => {
-  const n = names();
-  const lines = [];
-  lines.push(['Spiel', els.gameName.value].join(';'));
-  lines.push(['Modus', mode === 'classic' ? 'Classic' : '30J Edition'].join(';'));
-  
-  const head = ['Runde'];
-  n.forEach(name => head.push(`${name} Ansage`, `${name} Stiche`, `${name} Punkte`));
-  lines.push(head.join(';'));
+      let filledCount = 0;
+      let sumFirstPlayers = 0;
 
-  [...els.scoreTable.querySelectorAll('tbody tr')].forEach(row => {
-    const out = [row.dataset.round];
-    n.forEach((_, idx) => {
-      out.push(row.querySelectorAll('.bid')[idx].value, row.querySelectorAll('.trick')[idx].value);
-      out.push(row.querySelectorAll('[data-score]')[idx].textContent);
-    });
-    lines.push(out.join(';'));
-  });
+      // Summe der ersten (N-1) Spieler berechnen
+      for (let i = 0; i < totalPlayers - 1; i++) {
+        const val = inputs[i].value;
+        if (val !== '') {
+          filledCount++;
+          sumFirstPlayers += parseInt(val, 10);
+        }
+      }
 
-  const blob = new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8;' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'wizard-keeper.csv';
-  a.click();
-  URL.revokeObjectURL(a.href);
-});
+      // Prüfen, ob der letzte Spieler an der Reihe ist
+      const lastInput = inputs[totalPlayers - 1];
+      const verboteneZahl = cardsInRound - sumFirstPlayers;
+      const isForbiddenValid = verboteneZahl >= 0 && verbotenerStichIsPossible(verboteneZahl, cardsInRound);
 
-els.resetBtn.addEventListener('click', resetAll);
-els.statsBtn.addEventListener('click', renderLiveStatsModal);
-els.closeStatsBtn.addEventListener('click', () => els.statsModal.classList.remove('open'));
-els.closeVictoryBtn.addEventListener('click', () => els.victoryModal.classList.remove('open'));
+      let hasRuleViolation = false;
 
-els.defaultNamesBtn.addEventListener('click', () => {
-  renderPlayers();
-  buildTable(null);
-  saveState();
-});
+      // Wenn die Vorletzten eingegeben wurden, bestimmen wir die Regel
+      if (filledCount === totalPlayers - 1 && isForbiddenValid) {
+        const lastVal = lastInput.value !== '' ? parseInt(lastInput.value, 10) : null;
 
-els.playerCount.addEventListener('change', () => {
-  const existing = names();
-  activeRound = 1;
-  syncSetup();
-  renderPlayers(existing);
-  buildTable(null);
-  setActiveRound(1);
-});
+        if (lastVal === verboteneZahl) {
+          hasRuleViolation = true;
+          warningBox.innerHTML = `⚠️ <strong>Regelverstoß!</strong> ${state.players[totalPlayers - 1]} darf nicht genau <strong>${verboteneZahl}</strong> ansagen (Summe aller Ansagen darf nicht ${cardsInRound} sein).`;
+          warningBox.classList.remove('hidden');
+        } else {
+          warningBox.innerHTML = `ℹ️ <strong>Hinweis für ${state.players[totalPlayers - 1]}:</strong> Du darfst <strong>nicht ${verboteneZahl}</strong> ansagen!`;
+          warningBox.classList.remove('hidden');
+        }
+      } else {
+        warningBox.classList.add('hidden');
+      }
 
-els.maxRounds.addEventListener('change', () => {
-  fillSelect(els.currentRound, Number(els.maxRounds.value), activeRound, i => `Runde ${i}`);
-  buildTable(loadState()?.rows || null);
-  setActiveRound(Math.min(activeRound, Number(els.maxRounds.value)));
-});
+      // Button sperren, falls Regel verletzt ist oder nicht alle Felder ausgefüllt sind
+      const allFilled = inputs.every(i => i.value !== '');
+      submitBtn.disabled = !allFilled || hasRuleViolation;
+    }
 
-els.currentRound.addEventListener('change', (e) => setActiveRound(Number(e.target.value)));
-els.dealerStart.addEventListener('change', () => { buildTable(loadState()?.rows || null); saveState(); });
-els.ruleForbiddenBid.addEventListener('change', () => { checkForbiddenBid(); saveState(); });
-els.gameName.addEventListener('input', () => { els.titleOut.textContent = els.gameName.value || 'Wizard Runde'; saveState(); });
+    function verbotenerStichIsPossible(val, maxCards) {
+      return val >= 0 && val <= maxCards;
+    }
 
-els.modeBtns.forEach(btn => btn.addEventListener('click', () => {
-  mode = btn.dataset.mode;
-  els.modeBtns.forEach(x => x.classList.toggle('btn-primary', x === btn));
-  buildTable(loadState()?.rows || null);
-  saveState();
-}));
+    function confirmBids() {
+      const inputs = document.querySelectorAll('.bid-input');
+      state.bids = Array.from(inputs).map(i => parseInt(i.value, 10));
 
-els.prevBtn.addEventListener('click', () => setActiveRound(activeRound - 1));
-els.nextBtn.addEventListener('click', () => setActiveRound(activeRound + 1));
+      // Wechsel zu Phase 2: Gemachte Stiche
+      document.getElementById('bidding-phase').classList.add('hidden');
+      document.getElementById('result-phase').classList.remove('hidden');
 
-/* Init */
-const loaded = applyState(loadState());
-if (!loaded) {
-  syncSetup();
-  renderPlayers();
-  buildTable();
-  setActiveRound(1);
-}
-</script>
+      const resDiv = document.getElementById('result-inputs');
+      resDiv.innerHTML = '';
+      
+      state.players.forEach((player, idx) => {
+        resDiv.innerHTML += `
+          <div class="player-input-group">
+            <label>${player} (Ansage: ${state.bids[idx]})</label>
+            <input type="number" min="0" max="${state.currentRound}" class="result-input">
+          </div>
+        `;
+      });
+    }
+
+    function confirmResults() {
+      const inputs = Array.from(document.querySelectorAll('.result-input'));
+      const results = inputs.map(i => parseInt(i.value || 0, 10));
+      const cardsInRound = state.currentRound;
+      const warningBox = document.getElementById('result-warning');
+
+      // Validierung: Summe gemachte Stiche MUSS genau der Kartenanzahl entsprechen
+      const sumResults = results.reduce((a, b) => a + b, 0);
+      if (sumResults !== cardsInRound) {
+        warningBox.innerText = `⚠️ Summe der gemachten Stiche muss genau ${cardsInRound} ergeben (aktuell: ${sumResults}).`;
+        warningBox.classList.remove('hidden');
+        return;
+      }
+      warningBox.classList.add('hidden');
+
+      // Punkte berechnen & Kontostände aktualisieren
+      let roundScores = {};
+      state.players.forEach((player, idx) => {
+        const bid = state.bids[idx];
+        const made = results[idx];
+        let diff = Math.abs(bid - made);
+        let points = 0;
+
+        if (diff === 0) {
+          points = 20 + (made * 10);
+        } else {
+          points = -(diff * 10);
+        }
+
+        state.scores[player] += points;
+        roundScores[player] = state.scores[player];
+      });
+
+      state.history.push({ round: state.currentRound, scores: { ...roundScores } });
+      updateScoreboard();
+
+      // Nächste Runde oder Spielende
+      if (state.currentRound < state.maxRounds) {
+        state.currentRound++;
+        // Dealer-Rotation: Ersten Spieler ans Ende schieben
+        state.players.push(state.players.shift());
+        startRound();
+      } else {
+        alert("🎉 Spiel beendet! Gewonnen hat: " + getWinner());
+      }
+    }
+
+    // Scoreboard UI
+    function renderTableHeaders() {
+      const tr = document.getElementById('table-head');
+      tr.innerHTML = '<th>Runde</th>';
+      state.players.forEach(p => tr.innerHTML += `<th>${p}</th>`);
+    }
+
+    function updateScoreboard() {
+      const tbody = document.getElementById('table-body');
+      tbody.innerHTML = '';
+
+      state.history.forEach(h => {
+        let row = `<tr><td>${h.round}</td>`;
+        // Richtige Reihenfolge beibehalten
+        Object.keys(state.scores).forEach(p => {
+          row += `<td>${h.scores[p] !== undefined ? h.scores[p] : '-'}</td>`;
+        });
+        row += '</tr>';
+        tbody.innerHTML += row;
+      });
+    }
+
+    function getWinner() {
+      return Object.entries(state.scores).sort((a,b) => b[1] - a[1])[0][0];
+    }
+
+    function resetGame() {
+      document.getElementById('setup-screen').classList.remove('hidden');
+      document.getElementById('game-screen').classList.add('hidden');
+      document.getElementById('scoreboard-screen').classList.add('hidden');
+    }
+  </script>
 </body>
 </html>
