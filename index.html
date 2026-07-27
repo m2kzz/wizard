@@ -16,56 +16,61 @@ button,input,select{font:inherit}button{cursor:pointer}
 .card,.topbar{background:linear-gradient(180deg,rgba(20,25,35,.96),rgba(17,23,35,.96));border:1px solid var(--border);border-radius:var(--r2)}
 .topbar{padding:1rem;display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;position:sticky;top:0;z-index:20}
 .brand{display:flex;align-items:center;gap:.75rem}
-.logo{width:52px;height:52px;border-radius:1rem;display:grid;place-items:center;background:linear-gradient(135deg,var(--primary),color-mix(in srgb,var(--accent) 55%,var(--primary)));color:#fff;font-size:1.5rem}
-.brand h1{margin:0;font-family:var(--disp);font-size:1.8rem}
-.brand p{margin:.2rem 0 0;color:var(--muted);font-size:.95rem}
+.logo{width:48px;height:48px;border-radius:1rem;display:grid;place-items:center;background:linear-gradient(135deg,var(--primary),color-mix(in srgb,var(--accent) 55%,var(--primary)));color:#fff;font-size:1.4rem}
+.brand h1{margin:0;font-family:var(--disp);font-size:1.6rem}
+.brand p{margin:.1rem 0 0;color:var(--muted);font-size:.85rem}
 .actions,.toolbar,.chips{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center}
-.btn{min-height:44px;padding:.75rem 1rem;border-radius:999px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-weight:600;transition:all .2s ease}
+.btn{min-height:40px;padding:.5rem .9rem;border-radius:999px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-weight:600;font-size:.9rem;transition:all .2s ease}
 .btn:hover{background:var(--surface3)}
 .btn-primary{background:linear-gradient(135deg,var(--primary),var(--primary2));color:#fff;border:none}
 .btn-accent{background:linear-gradient(135deg,#8d651f,var(--accent));color:#fff;border:none}
-.pill{display:inline-flex;align-items:center;min-height:36px;padding:.45rem .8rem;border-radius:999px;background:var(--surface3);color:var(--muted);font-size:.9rem;font-weight:600}
+.pill{display:inline-flex;align-items:center;min-height:32px;padding:.3rem .7rem;border-radius:999px;background:var(--surface3);color:var(--muted);font-size:.8rem;font-weight:600}
 .hero,.card{padding:1rem}
 .hero-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:1rem}
-.hero h2{margin:0;font-family:var(--disp);font-size:2.4rem;line-height:1.05}
-.hero p{color:var(--muted)}
-.status{padding:1rem;border-radius:.9rem;background:linear-gradient(135deg,rgba(74,167,184,.16),rgba(198,156,84,.1));border:1px solid var(--border)}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:.75rem}
-.stat{padding:1rem;border-radius:.9rem;background:var(--surface2);border:1px solid var(--border)}
-.stat span{display:block;color:var(--faint);font-size:.76rem;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem}
-.stat strong{font-size:1.2rem}
-.grid{display:grid;grid-template-columns:340px minmax(0,1fr);gap:1rem}
+.hero h2{margin:0;font-family:var(--disp);font-size:2rem;line-height:1.05}
+.hero p{color:var(--muted);font-size:.9rem}
+.status{padding:.8rem;border-radius:.9rem;background:linear-gradient(135deg,rgba(74,167,184,.16),rgba(198,156,84,.1));border:1px solid var(--border);font-size:.9rem}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem}
+.stat{padding:.75rem;border-radius:.9rem;background:var(--surface2);border:1px solid var(--border)}
+.stat span{display:block;color:var(--faint);font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.2rem}
+.stat strong{font-size:1.1rem}
+.grid{display:grid;grid-template-columns:310px minmax(0,1fr);gap:1rem}
 .stack{display:grid;gap:1rem}
-.label{margin:0 0 .4rem;color:var(--faint);font-size:.76rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700}
-h2{margin:0;font-size:1.25rem}
-.field{display:grid;gap:.45rem}
-.field label{font-weight:600;font-size:.95rem}
-.field input,.field select{min-height:46px;padding:.8rem .9rem;border-radius:.9rem;border:1px solid var(--border);background:var(--surface2);color:var(--text)}
-.players{display:grid;gap:.5rem}
-.player-row{display:grid;grid-template-columns:52px 1fr;gap:.5rem}
-.player-badge{min-height:46px;display:grid;place-items:center;border-radius:999px;background:var(--surface3);color:var(--accent);font-weight:700}
-.table-wrap{overflow:auto}
+.label{margin:0 0 .3rem;color:var(--faint);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700}
+h2{margin:0;font-size:1.2rem}
+.field{display:grid;gap:.35rem}
+.field label{font-weight:600;font-size:.85rem}
+.field input,.field select{min-height:40px;padding:.5rem .7rem;border-radius:.8rem;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-size:.9rem}
+.players{display:grid;gap:.4stream}
+.player-row{display:grid;grid-template-columns:40px 1fr;gap:.4rem}
+.player-badge{min-height:40px;display:grid;place-items:center;border-radius:999px;background:var(--surface3);color:var(--accent);font-weight:700;font-size:.85rem}
+.table-wrap{width:100%;overflow-x:hidden}
 .table-card{padding:0;overflow:hidden}
 .table-head{padding:1rem;border-bottom:1px solid var(--divider);display:flex;justify-content:space-between;gap:.75rem;flex-wrap:wrap}
-.small{color:var(--muted);font-size:.94rem}
-table{width:100%;border-collapse:collapse;min-width:1100px}
-th,td{padding:.7rem .5rem;border-bottom:1px solid var(--divider);text-align:center;vertical-align:middle;font-variant-numeric:tabular-nums}
-thead th{background:rgba(20,25,35,.98);position:sticky;top:0;z-index:4}
+.small{color:var(--muted);font-size:.85rem}
+
+/* Flexibles, passgenaues Tabellen-Layout */
+table{width:100%;border-collapse:collapse;table-layout:fixed}
+th,td{padding:.4rem .15rem;border-bottom:1px solid var(--divider);text-align:center;vertical-align:middle;font-size:.85rem;font-variant-numeric:tabular-nums}
+thead th{background:rgba(20,25,35,.98);position:sticky;top:0;z-index:4;font-size:.8rem}
+th.player-header{border-left:1px solid var(--divider);border-right:1px solid var(--divider)}
 tr.active-row{background:rgba(74,167,184,.18) !important}
 tr.active-row .round-col{background:rgba(74,167,184,.28) !important}
-.round-col{text-align:left;background:rgba(32,40,61,.55);white-space:nowrap}
-.mini{width:84px;min-height:42px;border-radius:.8rem;border:1px solid var(--border);background:var(--surface2);color:var(--text);text-align:center}
-.score{display:inline-block;min-width:72px;padding:.62rem .35rem;border-radius:.8rem;font-weight:700}
+.round-col{width:110px;text-align:left;padding-left:.5rem;background:rgba(32,40,61,.55);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mini{width:100%;max-width:42px;min-width:28px;height:36px;padding:0;border-radius:.5rem;border:1px solid var(--border);background:var(--surface2);color:var(--text);text-align:center;font-weight:600;font-size:.85rem}
+.score{display:inline-block;width:100%;max-width:55px;padding:.4rem .1rem;border-radius:.5rem;font-weight:700;font-size:.8rem}
 .pos{background:rgba(114,191,120,.14);color:var(--success)}
 .neg{background:rgba(216,106,166,.16);color:var(--error)}
 .neu{background:rgba(217,147,80,.15);color:var(--warning)}
 .tfoot th,.tfoot td{font-weight:700;background:rgba(74,167,184,.08)}
+
 .mobile{display:none}
 .mobile-card{padding:1rem;border-radius:.9rem;background:var(--surface2);border:1px solid var(--border)}
 .mobile-head{display:flex;justify-content:space-between;gap:.5rem;align-items:center;margin-bottom:.8rem}
 .mobile-grid{display:grid;grid-template-columns:1fr 1fr;gap:.65rem}
+
 @media(max-width:1080px){.grid,.hero-grid,.stats{grid-template-columns:1fr}.topbar{position:static}}
-@media(max-width:760px){.desktop{display:none}.mobile{display:grid;gap:1rem}.app{padding:.75rem}.hero h2{font-size:2rem}}
+@media(max-width:760px){.desktop{display:none}.mobile{display:grid;gap:1rem}.app{padding:.5rem}.hero h2{font-size:1.6rem}}
 </style>
 </head>
 <body>
@@ -84,14 +89,14 @@ tr.active-row .round-col{background:rgba(74,167,184,.28) !important}
   <div class="hero-grid">
     <div class="stack">
       <div><p class="label">Rundenkontrolle</p><h2 id="titleOut">Wizard Abendrunde</h2></div>
-      <p>Wähle die aktive Runde links im Setup oder nutze die Pfeil-Tasten unten im Mobile-Bereich.</p>
+      <p>Wähle die aktive Runde links im Setup oder nutze die Pfeile im Mobile-Bereich.</p>
       <div class="status" id="statusBox"><strong>Bereit.</strong> Konfiguriere Spieler und beginne mit Runde 1.</div>
     </div>
     <div class="stats">
-      <div class="stat"><span>Aktuelle Runde</span><strong id="statRound">1</strong></div>
-      <div class="stat"><span>Karten pro Spieler</span><strong id="statCards">1</strong></div>
+      <div class="stat"><span>Runde</span><strong id="statRound">1</strong></div>
+      <div class="stat"><span>Karten</span><strong id="statCards">1</strong></div>
       <div class="stat"><span>Geber</span><strong id="statDealer">Spieler 1</strong></div>
-      <div class="stat"><span>Erste Ansage</span><strong id="statBidder">Spieler 2</strong></div>
+      <div class="stat"><span>Ansage</span><strong id="statBidder">Spieler 2</strong></div>
     </div>
   </div>
   <div class="chips" id="meta"></div>
@@ -114,13 +119,13 @@ tr.active-row .round-col{background:rgba(74,167,184,.28) !important}
       <button class="btn" id="demoBtn">Demo</button>
       <button class="btn btn-primary" id="refreshBtn">Aktualisieren</button>
     </div>
-    <div class="small">Lokale Speicherung via LocalStorage. Perfekt für GitHub Pages.</div>
+    <div class="small">Lokale Speicherung via LocalStorage (Geräte-Lokal).</div>
   </aside>
   <main class="stack">
     <section class="card table-card desktop">
       <div class="table-head">
-        <div><p class="label">Desktop</p><h2>Komplette Partietabelle</h2></div>
-        <div class="chips"><div class="pill">Aktive Runde farblich hervorgehoben</div></div>
+        <div><p class="label">Desktop / Tablet</p>2Partietabelle (A = Ansage, S = Stiche, P = Punkte)</h2></div>
+        <div class="chips"><div class="pill">Aktive Runde hervorgehoben</div></div>
       </div>
       <div class="table-wrap"><table id="scoreTable"></table></div>
     </section>
@@ -285,25 +290,27 @@ function buildTable(savedRows = null) {
 
   const thead = document.createElement('thead');
   const tr1 = document.createElement('tr');
-  ['Runde', 'Infos'].forEach(label => {
-    const th = document.createElement('th');
-    th.rowSpan = 2;
-    th.textContent = label;
-    tr1.appendChild(th);
-  });
+  
+  const thR = document.createElement('th');
+  thR.rowSpan = 2;
+  thR.className = 'round-col';
+  thR.textContent = 'Runde';
+  tr1.appendChild(thR);
   
   n.forEach(name => {
     const th = document.createElement('th');
     th.colSpan = mode === 'anniversary' ? 4 : 3;
+    th.className = 'player-header';
     th.textContent = name;
     tr1.appendChild(th);
   });
 
   const tr2 = document.createElement('tr');
   n.forEach(() => {
-    ['Ansage', 'Stiche', ...(mode === 'anniversary' ? ['Notiz'] : []), 'Punkte'].forEach(label => {
+    ['A', 'S', ...(mode === 'anniversary' ? ['N'] : []), 'P'].forEach(label => {
       const th = document.createElement('th');
       th.textContent = label;
+      th.title = label === 'A' ? 'Ansage' : label === 'S' ? 'Stiche' : label === 'N' ? 'Notiz' : 'Punkte';
       tr2.appendChild(th);
     });
   });
@@ -316,18 +323,13 @@ function buildTable(savedRows = null) {
     if (round === activeRound) tr.classList.add('active-row');
 
     const dealer = n[dealerIndex(round)] || defaults[0];
-    const bidder = n[bidderIndex(round)] || defaults[1] || defaults[0];
 
     const th = document.createElement('th');
     th.className = 'round-col';
     th.scope = 'row';
-    th.textContent = `${round}. Runde`;
+    th.innerHTML = `<strong>Runde ${round}</strong> <span class="small">(${round}K · ${dealer.substring(0,6)})</span>`;
 
-    const info = document.createElement('td');
-    info.className = 'round-col';
-    info.innerHTML = `<strong>${round} Karte${round > 1 ? 'n' : ''}</strong><br><span class="small">Geber: ${dealer} · Erste Ansage: ${bidder}</span>`;
-
-    tr.append(th, info);
+    tr.append(th);
 
     n.forEach((_, idx) => {
       const saved = savedRows?.[round - 1]?.players?.[idx] || {};
@@ -364,8 +366,7 @@ function buildTable(savedRows = null) {
         note.type = 'text';
         note.value = saved.note || '';
         note.className = 'mini';
-        note.placeholder = 'z. B. Bombe';
-        note.style.width = '110px';
+        note.placeholder = '';
         note.addEventListener('input', () => saveState());
         const td3 = document.createElement('td'); td3.appendChild(note);
         tr.appendChild(td3);
@@ -381,9 +382,8 @@ function buildTable(savedRows = null) {
   const tfoot = document.createElement('tfoot');
   const trf = document.createElement('tr');
   trf.className = 'tfoot';
-  const thA = document.createElement('th'); thA.textContent = 'Gesamt';
-  const thB = document.createElement('th'); thB.textContent = '—';
-  trf.append(thA, thB);
+  const thA = document.createElement('th'); thA.className = 'round-col'; thA.textContent = 'Gesamt';
+  trf.append(thA);
 
   n.forEach(() => {
     ['—', '—', ...(mode === 'anniversary' ? ['—'] : [])].forEach(v => {
@@ -411,7 +411,7 @@ function updateRoundState(playerNames = names(), totals = null) {
   const best = totals ? Math.max(...totals) : 0;
   const leaders = totals ? playerNames.filter((_, idx) => totals[idx] === best) : [];
 
-  els.statusBox.innerHTML = `<strong>Aktive Runde ${current}.</strong> ${current} Karte${current > 1 ? 'n' : ''} pro Spieler. Geber: <strong>${dealer}</strong>. Erste Ansage: <strong>${bidder}</strong>. ${totals ? (leaders.length === 1 ? `${leaders[0]} führt mit ${best} Punkten.` : `Gleichstand: ${leaders.join(', ')} mit ${best} Punkten.`) : ''}`;
+  els.statusBox.innerHTML = `<strong>Aktive Runde ${current}.</strong> ${current} Karte${current > 1 ? 'n' : ''}. Geber: <strong>${dealer}</strong>. Ansage: <strong>${bidder}</strong>. ${totals ? (leaders.length === 1 ? `${leaders[0]} führt mit ${best} Pkt.` : `Gleichstand: ${best} Pkt.`) : ''}`;
 
   els.statRound.textContent = String(current);
   els.statCards.textContent = String(current);
@@ -477,6 +477,8 @@ function renderMobile() {
     in1.max = String(current);
     in1.value = bids[idx].value;
     in1.className = 'mini';
+    in1.style.maxWidth = '100%';
+    in1.style.height = '42px';
     in1.addEventListener('input', (e) => {
       bids[idx].value = e.target.value;
       recalc();
@@ -493,6 +495,8 @@ function renderMobile() {
     in2.max = String(current);
     in2.value = tricks[idx].value;
     in2.className = 'mini';
+    in2.style.maxWidth = '100%';
+    in2.style.height = '42px';
     in2.addEventListener('input', (e) => {
       tricks[idx].value = e.target.value;
       recalc();
@@ -576,7 +580,7 @@ els.csvBtn.addEventListener('click', () => {
   lines.push(head.join(';'));
 
   [...els.scoreTable.querySelectorAll('tbody tr')].forEach(row => {
-    const out = [row.dataset.round, row.children[1].innerText.replace(/\n/g, ' ')];
+    const out = [row.dataset.round, row.children[0].innerText.replace(/\n/g, ' ')];
     n.forEach((_, idx) => {
       out.push(row.querySelectorAll('.bid')[idx].value, row.querySelectorAll('.trick')[idx].value);
       if (mode === 'anniversary') out.push(row.querySelectorAll('input[type="text"]')[idx].value || '');
