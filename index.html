@@ -205,28 +205,30 @@ button { cursor: pointer; }
 
 .field { display: grid; gap: 0.35rem; }
 .field label { font-weight: 700; font-size: 0.82rem; color: #d8b4fe; }
-.field input, .field select {
+.field input, .field select, .players input {
   min-height: 40px;
   padding: 0.4rem 0.75rem;
   border-radius: 0.6rem;
   border: 1px solid var(--border-subtle);
   background: #151a2e;
-  color: #ffffff;
+  color: #ffffff !important;
   font-weight: 600;
   font-size: 0.9rem;
   outline: none;
   width: 100%;
 }
-.field input:focus, .field select:focus {
+.field input:focus, .field select:focus, .players input:focus {
   border-color: var(--gold);
   box-shadow: 0 0 8px var(--gold-glow);
+  background: #1a2038;
 }
 
 .players { display: grid; gap: 0.45rem; }
-.player-row { display: grid; grid-template-columns: 38px 1fr; gap: 0.4rem; }
+.player-row { display: grid; grid-template-columns: 38px 1fr; gap: 0.4rem; align-items: center; }
 .player-badge {
   display: grid;
   place-items: center;
+  height: 40px;
   border-radius: 0.6rem;
   background: #1e1b4b;
   color: var(--gold);
@@ -486,10 +488,9 @@ tr.active-row .round-col {
     <div class="field"><label for="currentRound">Fokus-Runde</label><select id="currentRound"></select></div>
     <div class="field"><label for="dealerStart">Erster Geber</label><select id="dealerStart"></select></div>
     <div><p class="label">Spieler Namen</p><div class="players" id="players"></div></div>
-    <div class="toolbar" style="margin-top: 0.4rem;">
-      <button class="btn" id="defaultNamesBtn">Standard</button>
-      <button class="btn" id="demoBtn">Demo</button>
-      <button class="btn btn-primary" id="refreshBtn">Berechnen</button>
+    <div class="stack" style="margin-top: 0.4rem;">
+      <button class="btn" id="defaultNamesBtn" style="width: 100%;">Standardnamen laden</button>
+      <button class="btn btn-primary" id="refreshBtn" style="width: 100%;">Tabelle berechnen</button>
     </div>
   </aside>
 
@@ -533,7 +534,6 @@ const els = {
   csvBtn: document.getElementById('csvBtn'),
   resetBtn: document.getElementById('resetBtn'),
   defaultNamesBtn: document.getElementById('defaultNamesBtn'),
-  demoBtn: document.getElementById('demoBtn'),
   refreshBtn: document.getElementById('refreshBtn'),
   prevBtn: document.getElementById('prevBtn'),
   nextBtn: document.getElementById('nextBtn'),
@@ -1046,16 +1046,6 @@ els.defaultNamesBtn.addEventListener('click', () => {
   renderPlayers();
   buildTable(null);
   saveState();
-});
-
-els.demoBtn.addEventListener('click', () => {
-  [...els.scoreTable.querySelectorAll('tbody tr')].forEach((row, ri) => {
-    [...row.querySelectorAll('.bid')].forEach((el, idx) => el.value = String((ri + idx) % 3));
-    [...row.querySelectorAll('.trick')].forEach((el, idx) => el.value = String((ri + idx + 1) % 3));
-  });
-  recalc();
-  saveState();
-  renderMobile();
 });
 
 els.refreshBtn.addEventListener('click', () => {
