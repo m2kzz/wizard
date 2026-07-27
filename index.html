@@ -9,30 +9,30 @@
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #090a14;
-  --surface: #121528;
-  --surface2: #191e38;
-  --surface3: #232a4e;
+  --bg: #06070c;
+  --surface: #0f1220;
+  --surface2: #161b30;
+  --surface3: #202744;
   --text: #f1edfe;
-  --muted: #a39ebc;
-  --faint: #6c668a;
+  --muted: #948fae;
+  --faint: #595478;
   
-  --primary: #7b2cbf;
-  --primary2: #9d4edd;
-  --accent: #f5c042;
-  --accent-glow: rgba(245, 192, 66, 0.25);
-  --cyan-glow: #00f2fe;
+  --primary: #8b5cf6;
+  --primary-glow: rgba(139, 92, 246, 0.35);
+  --accent: #fbbf24;
+  --accent-glow: rgba(251, 191, 36, 0.25);
+  --cyan: #06b6d4;
   
   --success: #10b981;
-  --success-bg: rgba(16, 185, 129, 0.15);
+  --success-bg: rgba(16, 185, 129, 0.18);
   --error: #f43f5e;
-  --error-bg: rgba(244, 63, 94, 0.18);
+  --error-bg: rgba(244, 63, 94, 0.2);
   --warning: #f59e0b;
   --warning-bg: rgba(245, 158, 11, 0.18);
   
-  --border: rgba(245, 192, 66, 0.2);
+  --border: rgba(251, 191, 36, 0.22);
   --border-subtle: rgba(255, 255, 255, 0.08);
-  --divider: rgba(255, 255, 255, 0.06);
+  --divider: rgba(255, 255, 255, 0.05);
   --disp: 'Cinzel', serif;
   --body: 'Inter', sans-serif;
 }
@@ -43,142 +43,132 @@ body {
   min-height: 100vh;
   font-family: var(--body);
   background: 
-    radial-gradient(circle at 10% 10%, rgba(123, 44, 191, 0.25), transparent 30%),
-    radial-gradient(circle at 90% 15%, rgba(0, 242, 254, 0.15), transparent 25%),
-    radial-gradient(circle at 50% 85%, rgba(245, 192, 66, 0.1), transparent 35%),
-    linear-gradient(180deg, var(--bg), #05060a);
+    radial-gradient(circle at 15% 10%, rgba(139, 92, 246, 0.2), transparent 35%),
+    radial-gradient(circle at 85% 15%, rgba(6, 182, 212, 0.15), transparent 30%),
+    linear-gradient(180deg, var(--bg), #020305);
   color: var(--text);
+  overflow-x: hidden;
 }
 
 button, input, select { font: inherit; color: var(--text); }
 button { cursor: pointer; }
 
 .app {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 1rem;
+  max-width: 100%;
+  padding: 0.75rem;
   display: grid;
-  gap: 1rem;
+  gap: 0.75rem;
 }
 
 .card, .topbar {
-  background: linear-gradient(135deg, rgba(18, 21, 40, 0.95), rgba(13, 15, 30, 0.98));
+  background: linear-gradient(135deg, rgba(15, 18, 32, 0.95), rgba(10, 12, 22, 0.98));
   border: 1px solid var(--border);
-  border-radius: 1rem;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.5), inset 0 0 15px rgba(123, 44, 191, 0.1);
+  border-radius: 0.85rem;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.6), inset 0 0 12px rgba(139, 92, 246, 0.08);
   backdrop-filter: blur(8px);
 }
 
 .topbar {
-  padding: 0.85rem 1.25rem;
+  padding: 0.6rem 1rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 1rem;
+  gap: 0.75rem;
   flex-wrap: wrap;
-  position: sticky;
-  top: 0;
-  z-index: 20;
 }
 
-.brand { display: flex; align-items: center; gap: 0.85rem; }
+.brand { display: flex; align-items: center; gap: 0.65rem; }
 .logo {
-  width: 50px;
-  height: 50px;
-  border-radius: 0.85rem;
+  width: 40px;
+  height: 40px;
+  border-radius: 0.65rem;
   display: grid;
   place-items: center;
   background: linear-gradient(135deg, var(--primary), var(--accent));
   color: #fff;
-  font-size: 1.6rem;
-  box-shadow: 0 0 15px var(--accent-glow);
+  font-size: 1.3rem;
+  box-shadow: 0 0 12px var(--primary-glow);
 }
 
 .brand h1 {
   margin: 0;
   font-family: var(--disp);
-  font-size: 1.7rem;
-  letter-spacing: 0.05em;
-  background: linear-gradient(135deg, #fff7d6, var(--accent));
+  font-size: 1.4rem;
+  letter-spacing: 0.04em;
+  background: linear-gradient(135deg, #ffffff, var(--accent));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-.brand p { margin: 0.1rem 0 0; color: var(--muted); font-size: 0.85rem; }
+.brand p { margin: 0; color: var(--muted); font-size: 0.75rem; }
 
-.actions, .toolbar, .chips { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+.actions, .toolbar, .chips { display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: center; }
 
 .btn {
-  min-height: 38px;
-  padding: 0.5rem 1rem;
+  min-height: 34px;
+  padding: 0.35rem 0.75rem;
   border-radius: 999px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-subtle);
   background: var(--surface2);
   color: var(--text);
   font-weight: 600;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   transition: all 0.2s ease;
 }
 .btn:hover {
   background: var(--surface3);
   border-color: var(--accent);
-  box-shadow: 0 0 10px var(--accent-glow);
-  transform: translateY(-1px);
+  box-shadow: 0 0 8px var(--accent-glow);
 }
 .btn-primary {
-  background: linear-gradient(135deg, var(--primary), var(--primary2));
+  background: linear-gradient(135deg, var(--primary), #7c3aed);
   color: #fff;
   border: none;
-  box-shadow: 0 4px 15px rgba(123, 44, 191, 0.4);
-}
-.btn-primary:hover {
-  box-shadow: 0 4px 20px rgba(157, 78, 221, 0.6);
+  box-shadow: 0 2px 10px var(--primary-glow);
 }
 .btn-accent {
-  background: linear-gradient(135deg, #a8791c, var(--accent));
-  color: #0d0f1e;
+  background: linear-gradient(135deg, #d97706, var(--accent));
+  color: #06070c;
   font-weight: 700;
   border: none;
-  box-shadow: 0 4px 15px var(--accent-glow);
+  box-shadow: 0 2px 10px var(--accent-glow);
 }
 
 .pill {
   display: inline-flex;
   align-items: center;
-  min-height: 32px;
-  padding: 0.3rem 0.8rem;
+  min-height: 28px;
+  padding: 0.2rem 0.65rem;
   border-radius: 999px;
   background: var(--surface3);
   border: 1px solid var(--border-subtle);
   color: var(--accent);
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   font-weight: 600;
 }
 
-.hero, .card { padding: 1.1rem; }
-.hero-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 1.25rem; }
+.hero, .card { padding: 0.85rem; }
+.hero-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 1rem; }
 
 .hero h2 {
   margin: 0;
   font-family: var(--disp);
-  font-size: 2rem;
-  background: linear-gradient(135deg, #ffffff, #dcd4f7);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  font-size: 1.5rem;
+  color: #fff;
 }
-.hero p { color: var(--muted); font-size: 0.9rem; margin-top: 0.4rem; }
+.hero p { color: var(--muted); font-size: 0.82rem; margin-top: 0.2rem; }
 
 .status {
-  padding: 0.85rem 1rem;
-  border-radius: 0.85rem;
-  background: linear-gradient(135deg, rgba(123, 44, 191, 0.2), rgba(245, 192, 66, 0.08));
-  border: 1px solid var(--border);
-  font-size: 0.9rem;
+  padding: 0.6rem 0.85rem;
+  border-radius: 0.65rem;
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(251, 191, 36, 0.05));
+  border: 1px solid var(--border-subtle);
+  font-size: 0.82rem;
 }
 
-.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; }
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.4rem; }
 .stat {
-  padding: 0.75rem;
-  border-radius: 0.85rem;
+  padding: 0.5rem;
+  border-radius: 0.65rem;
   background: var(--surface2);
   border: 1px solid var(--border-subtle);
   text-align: center;
@@ -186,81 +176,80 @@ button { cursor: pointer; }
 .stat span {
   display: block;
   color: var(--faint);
-  font-size: 0.68rem;
+  font-size: 0.65rem;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  margin-bottom: 0.25rem;
+  letter-spacing: 0.05em;
   font-weight: 700;
 }
-.stat strong { font-size: 1.1rem; color: var(--accent); font-family: var(--disp); }
+.stat strong { font-size: 1rem; color: var(--accent); font-family: var(--disp); }
 
-.grid { display: grid; grid-template-columns: 280px minmax(0, 1fr); gap: 1rem; }
-.stack { display: grid; gap: 1rem; }
+.grid { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 0.75rem; }
+.grid > * { min-width: 0; } /* Crucial to prevent grid overflow */
+.stack { display: grid; gap: 0.75rem; }
 
 .label {
-  margin: 0 0 0.35rem;
+  margin: 0 0 0.25rem;
   color: var(--accent);
-  font-size: 0.7rem;
-  letter-spacing: 0.12em;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   font-weight: 700;
   font-family: var(--disp);
 }
 
-h2 { margin: 0; font-size: 1.2rem; font-family: var(--disp); letter-spacing: 0.02em; }
+h2 { margin: 0; font-size: 1.1rem; font-family: var(--disp); }
 
-.field { display: grid; gap: 0.35rem; }
-.field label { font-weight: 600; font-size: 0.85rem; color: var(--muted); }
+.field { display: grid; gap: 0.25rem; }
+.field label { font-weight: 600; font-size: 0.78rem; color: var(--muted); }
 .field input, .field select {
-  min-height: 40px;
-  padding: 0.5rem 0.75rem;
-  border-radius: 0.75rem;
+  min-height: 36px;
+  padding: 0.4rem 0.6rem;
+  border-radius: 0.6rem;
   border: 1px solid var(--border-subtle);
   background: var(--surface2);
   color: var(--text);
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   outline: none;
-  transition: border-color 0.2s;
 }
 .field input:focus, .field select:focus {
   border-color: var(--accent);
-  box-shadow: 0 0 8px var(--accent-glow);
+  box-shadow: 0 0 6px var(--accent-glow);
 }
 
-.players { display: grid; gap: 0.4rem; }
-.player-row { display: grid; grid-template-columns: 36px 1fr; gap: 0.4rem; }
+.players { display: grid; gap: 0.35rem; }
+.player-row { display: grid; grid-template-columns: 32px 1fr; gap: 0.35rem; }
 .player-row input {
   background: var(--surface2) !important;
   color: var(--text) !important;
   border: 1px solid var(--border-subtle);
-  border-radius: 0.75rem;
-  padding: 0.5rem 0.75rem;
+  border-radius: 0.6rem;
+  padding: 0.4rem 0.6rem;
 }
 .player-badge {
-  min-height: 38px;
+  min-height: 34px;
   display: grid;
   place-items: center;
-  border-radius: 0.75rem;
+  border-radius: 0.6rem;
   background: var(--surface3);
   color: var(--accent);
   font-weight: 700;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   border: 1px solid var(--border-subtle);
 }
 
-/* Perfect Table Container - No Scrollbar */
+/* Absolute Zero-Scroll Table Setup */
 .table-wrap {
   width: 100%;
   overflow: hidden;
-  border-radius: 0 0 1rem 1rem;
+  border-radius: 0 0 0.85rem 0.85rem;
 }
 .table-card { padding: 0; overflow: hidden; }
 .table-head {
-  padding: 1rem 1.25rem;
+  padding: 0.75rem 1rem;
   border-bottom: 1px solid var(--border-subtle);
   display: flex;
   justify-content: space-between;
-  gap: 0.75rem;
+  gap: 0.5rem;
   flex-wrap: wrap;
   align-items: center;
 }
@@ -268,24 +257,25 @@ h2 { margin: 0; font-size: 1.2rem; font-family: var(--disp); letter-spacing: 0.0
 table {
   width: 100%;
   border-collapse: collapse;
-  table-layout: fixed; /* Strictly prevents layout popping / scrolling */
+  table-layout: fixed; /* Strictly divides available width */
 }
 
 th, td {
-  padding: 0.35rem 0.1rem;
+  padding: 0.25rem 0.05rem;
   border-bottom: 1px solid var(--divider);
   text-align: center;
   vertical-align: middle;
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   font-variant-numeric: tabular-nums;
+  overflow: hidden;
 }
 
 thead th {
-  background: rgba(18, 21, 40, 0.98);
+  background: rgba(15, 18, 32, 0.98);
   position: sticky;
   top: 0;
   z-index: 4;
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   color: var(--muted);
   font-weight: 600;
 }
@@ -295,48 +285,48 @@ th.player-header {
   border-right: 1px solid var(--border-subtle);
   color: var(--accent);
   font-family: var(--disp);
-  font-size: 0.85rem;
-  padding: 0.4rem 0.2rem;
+  font-size: 0.82rem;
+  padding: 0.35rem 0.1rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  max-width: 0; /* Forces text truncation if name is long */
 }
 
 tr.active-row {
-  background: rgba(123, 44, 191, 0.22) !important;
-  box-shadow: inset 3px 0 0 var(--accent);
+  background: rgba(139, 92, 246, 0.2) !important;
 }
 tr.active-row .round-col {
-  background: rgba(123, 44, 191, 0.35) !important;
+  background: rgba(139, 92, 246, 0.35) !important;
   color: var(--accent) !important;
   font-weight: 800;
 }
 
 .round-col {
-  width: 72px;
+  width: 38px; /* Ultra compact */
   text-align: center;
-  background: rgba(25, 30, 56, 0.6);
+  background: rgba(22, 27, 48, 0.6);
   color: var(--muted);
-  font-weight: 600;
-  font-size: 0.78rem;
-  white-space: nowrap;
+  font-weight: 700;
+  font-size: 0.75rem;
 }
 
-/* Compact inputs inside table */
+/* Compact input boxes inside table */
 .mini {
-  width: 90%;
-  max-width: 38px;
-  height: 32px;
+  width: 100%;
+  max-width: 32px;
+  height: 28px;
+  margin: 0 auto;
   padding: 0;
-  border-radius: 0.5rem;
+  border-radius: 0.4rem;
   border: 1px solid var(--border-subtle);
   background: var(--surface2);
   color: var(--text);
   text-align: center;
   font-weight: 700;
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   outline: none;
-  transition: all 0.15s;
+  display: block;
 }
 .mini:focus {
   border-color: var(--accent);
@@ -345,13 +335,15 @@ tr.active-row .round-col {
 }
 
 .score {
-  display: inline-block;
-  width: 92%;
-  max-width: 48px;
-  padding: 0.35rem 0.1rem;
-  border-radius: 0.5rem;
+  display: block;
+  width: 100%;
+  max-width: 42px;
+  margin: 0 auto;
+  padding: 0.25rem 0;
+  border-radius: 0.4rem;
   font-weight: 700;
-  font-size: 0.82rem;
+  font-size: 0.8rem;
+  text-align: center;
 }
 .pos { background: var(--success-bg); color: var(--success); border: 1px solid rgba(16, 185, 129, 0.3); }
 .neg { background: var(--error-bg); color: var(--error); border: 1px solid rgba(244, 63, 94, 0.3); }
@@ -359,31 +351,30 @@ tr.active-row .round-col {
 
 .tfoot th, .tfoot td {
   font-weight: 800;
-  background: rgba(123, 44, 191, 0.15);
-  padding: 0.6rem 0.1rem;
-  font-size: 0.9rem;
+  background: rgba(139, 92, 246, 0.15);
+  padding: 0.5rem 0.05rem;
+  font-size: 0.85rem;
   color: var(--accent);
 }
 
 .mobile { display: none; }
 .mobile-card {
-  padding: 1rem;
-  border-radius: 0.85rem;
+  padding: 0.85rem;
+  border-radius: 0.75rem;
   background: var(--surface2);
   border: 1px solid var(--border-subtle);
 }
-.mobile-head { display: flex; justify-content: space-between; gap: 0.5rem; align-items: center; margin-bottom: 0.8rem; }
-.mobile-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem; }
+.mobile-head { display: flex; justify-content: space-between; gap: 0.5rem; align-items: center; margin-bottom: 0.6rem; }
+.mobile-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
 
-@media(max-width: 1080px) {
+@media(max-width: 960px) {
   .grid, .hero-grid, .stats { grid-template-columns: 1fr; }
-  .topbar { position: static; }
 }
-@media(max-width: 760px) {
+@media(max-width: 720px) {
   .desktop { display: none; }
-  .mobile { display: grid; gap: 1rem; }
-  .app { padding: 0.5rem; }
-  .hero h2 { font-size: 1.5rem; }
+  .mobile { display: grid; gap: 0.75rem; }
+  .app { padding: 0.4rem; }
+  .hero h2 { font-size: 1.3rem; }
 }
 </style>
 </head>
@@ -394,7 +385,7 @@ tr.active-row .round-col {
     <div class="logo">🔮</div>
     <div>
       <h1>Wizard Keeper</h1>
-      <p>Magischer Scorekeeper für GitHub Pages</p>
+      <p>Local Scorekeeper</p>
     </div>
   </div>
   <div class="actions">
@@ -413,14 +404,13 @@ tr.active-row .round-col {
         <p class="label">Rundenkontrolle</p>
         <h2 id="titleOut">Wizard Abendrunde</h2>
       </div>
-      <p>Verfolge Stiche, Ansagen & Punkte im Duell. Deine Spieldaten werden automatisch lokal gespeichert.</p>
-      <div class="status" id="statusBox"><strong>Bereit.</strong> Konfiguriere die Zauberer und starte Runde 1.</div>
+      <div class="status" id="statusBox"><strong>Bereit.</strong> Konfiguriere die Spieler und starte Runde 1.</div>
     </div>
     <div class="stats">
-      <div class="stat"><span>Aktuelle Runde</span><strong id="statRound">1</strong></div>
-      <div class="stat"><span>Karten / Hand</span><strong id="statCards">1</strong></div>
+      <div class="stat"><span>Runde</span><strong id="statRound">1</strong></div>
+      <div class="stat"><span>Karten</span><strong id="statCards">1</strong></div>
       <div class="stat"><span>Geber</span><strong id="statDealer">Spieler 1</strong></div>
-      <div class="stat"><span>Erste Ansage</span><strong id="statBidder">Spieler 2</strong></div>
+      <div class="stat"><span>Ansage</span><strong id="statBidder">Spieler 2</strong></div>
     </div>
   </div>
   <div class="chips" id="meta"></div>
@@ -428,29 +418,28 @@ tr.active-row .round-col {
 
 <div class="grid">
   <aside class="card stack">
-    <div><p class="label">Setup</p><h2>Partie Optionen</h2></div>
+    <div><p class="label">Setup</p><h2>Optionen</h2></div>
     <div class="toolbar">
       <button class="btn btn-primary mode-btn" data-mode="classic">Classic</button>
-      <button class="btn mode-btn" data-mode="anniversary">30 Jahre Edition</button>
+      <button class="btn mode-btn" data-mode="anniversary">30J Edition</button>
     </div>
     <div class="field"><label for="gameName">Partiename</label><input id="gameName" value="Wizard Abendrunde"></div>
     <div class="field"><label for="playerCount">Spielerzahl</label><select id="playerCount"><option value="3">3 Spieler</option><option value="4" selected>4 Spieler</option><option value="5">5 Spieler</option><option value="6">6 Spieler</option></select></div>
     <div class="field"><label for="maxRounds">Max. Runden</label><select id="maxRounds"></select></div>
     <div class="field"><label for="currentRound">Fokus-Runde</label><select id="currentRound"></select></div>
     <div class="field"><label for="dealerStart">Erster Geber</label><select id="dealerStart"></select></div>
-    <div><p class="label">Zauberer Namen</p><div class="players" id="players"></div></div>
+    <div><p class="label">Spieler Namen</p><div class="players" id="players"></div></div>
     <div class="toolbar">
       <button class="btn" id="defaultNamesBtn">Standard</button>
-      <button class="btn" id="demoBtn">Demo Werte</button>
-      <button class="btn btn-primary" id="refreshBtn">Neu Berechnen</button>
+      <button class="btn" id="demoBtn">Demo</button>
+      <button class="btn btn-primary" id="refreshBtn">Berechnen</button>
     </div>
-    <div class="small" style="color:var(--faint); font-size:0.75rem;">Speicherung erfolgt lokal im Browser (LocalStorage). Perfect für GitHub Pages!</div>
   </aside>
 
   <main class="stack">
     <section class="card table-card desktop">
       <div class="table-head">
-        <div><p class="label">Desktop Übersicht</p><h2>Partietabelle (A = Ansage · S = Stiche · P = Punkte)</h2></div>
+        <div><p class="label">Übersicht</p><h2>Partietabelle (A = Ansage · S = Stiche · P = Punkte)</h2></div>
         <div class="chips"><div class="pill">✦ Aktive Runde hervorgehoben</div></div>
       </div>
       <div class="table-wrap"><table id="scoreTable"></table></div>
@@ -608,7 +597,7 @@ function buildTable(savedRows = null) {
   
   els.titleOut.textContent = els.gameName.value.trim() || 'Wizard Runde';
   els.meta.innerHTML = '';
-  [mode === 'classic' ? 'Standard Version' : '30 Jahre Edition', `${n.length} Spieler`, `${rounds} Runden`].forEach(t => {
+  [mode === 'classic' ? 'Classic' : '30J Edition', `${n.length} Spieler`, `${rounds} Runden`].forEach(t => {
     const c = document.createElement('div');
     c.className = 'pill';
     c.textContent = t;
@@ -621,7 +610,7 @@ function buildTable(savedRows = null) {
   const thR = document.createElement('th');
   thR.rowSpan = 2;
   thR.className = 'round-col';
-  thR.textContent = 'Runde';
+  thR.textContent = 'R';
   tr1.appendChild(thR);
   
   n.forEach(name => {
@@ -649,12 +638,10 @@ function buildTable(savedRows = null) {
     tr.dataset.round = String(round);
     if (round === activeRound) tr.classList.add('active-row');
 
-    const dealer = n[dealerIndex(round)] || defaults[0];
-
     const th = document.createElement('th');
     th.className = 'round-col';
     th.scope = 'row';
-    th.innerHTML = `<strong>R${round}</strong> <span style="font-size:0.68rem; opacity:0.75; display:block;">(${dealer.substring(0,5)})</span>`;
+    th.innerHTML = `<strong>R${round}</strong>`; // Schlanke Rundennummer ohne Info-Text
 
     tr.append(th);
 
@@ -693,7 +680,7 @@ function buildTable(savedRows = null) {
         note.type = 'text';
         note.value = saved.note || '';
         note.className = 'mini';
-        note.placeholder = '';
+        note.style.maxWidth = '100%';
         note.addEventListener('input', () => saveState());
         const td3 = document.createElement('td'); td3.appendChild(note);
         tr.appendChild(td3);
@@ -709,7 +696,7 @@ function buildTable(savedRows = null) {
   const tfoot = document.createElement('tfoot');
   const trf = document.createElement('tr');
   trf.className = 'tfoot';
-  const thA = document.createElement('th'); thA.className = 'round-col'; thA.textContent = 'Gesamt';
+  const thA = document.createElement('th'); thA.className = 'round-col'; thA.textContent = 'Σ';
   trf.append(thA);
 
   n.forEach(() => {
@@ -738,7 +725,7 @@ function updateRoundState(playerNames = names(), totals = null) {
   const best = totals ? Math.max(...totals) : 0;
   const leaders = totals ? playerNames.filter((_, idx) => totals[idx] === best) : [];
 
-  els.statusBox.innerHTML = `<strong>Runde ${current} aktiv.</strong> ${current} Karte${current > 1 ? 'n' : ''} im Spiel. Geber: <strong>${dealer}</strong>. Erste Ansage: <strong>${bidder}</strong>. ${totals ? (leaders.length === 1 ? `🏆 <strong>${leaders[0]}</strong> führt mit ${best} Pkt.` : `Gleichstand: ${best} Pkt.`) : ''}`;
+  els.statusBox.innerHTML = `<strong>Runde ${current} aktiv.</strong> (${current} Karte${current > 1 ? 'n' : ''}). Geber: <strong>${dealer}</strong> · Ansage: <strong>${bidder}</strong>. ${totals ? (leaders.length === 1 ? `🏆 <strong>${leaders[0]}</strong> führt mit ${best} Pkt.` : `Gleichstand: ${best} Pkt.`) : ''}`;
 
   els.statRound.textContent = String(current);
   els.statCards.textContent = String(current);
@@ -805,7 +792,7 @@ function renderMobile() {
     in1.value = bids[idx].value;
     in1.className = 'mini';
     in1.style.maxWidth = '100%';
-    in1.style.height = '42px';
+    in1.style.height = '40px';
     in1.addEventListener('input', (e) => {
       bids[idx].value = e.target.value;
       recalc();
@@ -823,7 +810,7 @@ function renderMobile() {
     in2.value = tricks[idx].value;
     in2.className = 'mini';
     in2.style.maxWidth = '100%';
-    in2.style.height = '42px';
+    in2.style.height = '40px';
     in2.addEventListener('input', (e) => {
       tricks[idx].value = e.target.value;
       recalc();
@@ -900,14 +887,14 @@ els.csvBtn.addEventListener('click', () => {
   const n = names();
   const lines = [];
   lines.push(['Spiel', els.gameName.value].join(';'));
-  lines.push(['Modus', mode === 'classic' ? 'Standard Version' : '30 Jahre Edition'].join(';'));
+  lines.push(['Modus', mode === 'classic' ? 'Classic' : '30J Edition'].join(';'));
   
-  const head = ['Runde', 'Info'];
+  const head = ['Runde'];
   n.forEach(name => head.push(`${name} Ansage`, `${name} Stiche`, ...(mode === 'anniversary' ? [`${name} Notiz`] : []), `${name} Punkte`));
   lines.push(head.join(';'));
 
   [...els.scoreTable.querySelectorAll('tbody tr')].forEach(row => {
-    const out = [row.dataset.round, row.children[0].innerText.replace(/\n/g, ' ')];
+    const out = [row.dataset.round];
     n.forEach((_, idx) => {
       out.push(row.querySelectorAll('.bid')[idx].value, row.querySelectorAll('.trick')[idx].value);
       if (mode === 'anniversary') out.push(row.querySelectorAll('input[type="text"]')[idx].value || '');
