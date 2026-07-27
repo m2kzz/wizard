@@ -21,7 +21,6 @@
   --primary-glow: rgba(147, 51, 234, 0.4);
   --gold: #f59e0b;
   --gold-glow: rgba(245, 158, 11, 0.3);
-  --cyan: #06b6d4;
   
   --success: #10b981;
   --success-bg: rgba(16, 185, 129, 0.15);
@@ -68,7 +67,6 @@ button { cursor: pointer; }
   box-shadow: 0 10px 30px rgba(0,0,0,0.7), inset 0 1px 1px rgba(255,255,255,0.1);
   backdrop-filter: blur(12px);
   width: 100%;
-  box-sizing: border-box;
 }
 
 .topbar {
@@ -184,14 +182,13 @@ button { cursor: pointer; }
 }
 .stat strong { font-size: 1.1rem; color: var(--gold); font-family: var(--font-disp); }
 
-/* Main Grid Layout Fix */
 .main-grid { 
   display: grid; 
   grid-template-columns: 280px minmax(0, 1fr); 
   gap: 0.75rem; 
   width: 100%;
 }
-.main-grid > * { min-width: 0; } /* Prevents table from pushing grid out */
+.main-grid > * { min-width: 0; }
 
 .stack { display: grid; gap: 0.75rem; align-content: start; }
 
@@ -205,8 +202,6 @@ button { cursor: pointer; }
   font-family: var(--font-disp);
 }
 
-h2 { margin: 0; font-size: 1.1rem; font-family: var(--font-disp); }
-
 .field { display: grid; gap: 0.3rem; }
 .field label { font-weight: 600; font-size: 0.78rem; color: var(--muted); }
 .field input, .field select {
@@ -219,10 +214,6 @@ h2 { margin: 0; font-size: 1.1rem; font-family: var(--font-disp); }
   font-size: 0.85rem;
   outline: none;
   width: 100%;
-}
-.field input:focus, .field select:focus {
-  border-color: var(--gold);
-  box-shadow: 0 0 8px var(--gold-glow);
 }
 
 .players { display: grid; gap: 0.4rem; }
@@ -238,7 +229,6 @@ h2 { margin: 0; font-size: 1.1rem; font-family: var(--font-disp); }
   border: 1px solid var(--border-subtle);
 }
 
-/* Table Styling Fixes */
 .table-card { padding: 0; overflow: hidden; }
 .table-head {
   padding: 0.85rem 1.25rem;
@@ -249,10 +239,7 @@ h2 { margin: 0; font-size: 1.1rem; font-family: var(--font-disp); }
   align-items: center;
 }
 
-.table-wrap {
-  width: 100%;
-  overflow-x: auto;
-}
+.table-wrap { width: 100%; overflow-x: auto; }
 
 table {
   width: 100%;
@@ -291,9 +278,7 @@ th.player-header {
   text-overflow: ellipsis;
 }
 
-tr.active-row {
-  background: rgba(147, 51, 234, 0.12) !important;
-}
+tr.active-row { background: rgba(147, 51, 234, 0.12) !important; }
 tr.active-row .round-col {
   background: rgba(147, 51, 234, 0.3) !important;
   color: var(--gold) !important;
@@ -310,7 +295,6 @@ tr.active-row .round-col {
   font-family: var(--font-disp);
 }
 
-/* Compact inputs inside table cells */
 .mini {
   width: 90%;
   max-width: 36px;
@@ -326,11 +310,6 @@ tr.active-row .round-col {
   font-size: 0.85rem;
   outline: none;
   display: block;
-}
-.mini:focus {
-  border-color: var(--gold);
-  background: var(--surface3);
-  box-shadow: 0 0 6px var(--gold-glow);
 }
 
 .score {
@@ -356,17 +335,79 @@ tr.active-row .round-col {
   color: var(--gold);
 }
 
+/* Mobile Styling & Touch Stepper */
 .mobile { display: none; }
 .mobile-card {
   padding: 0.85rem;
   border-radius: 0.75rem;
   background: var(--surface2);
   border: 1px solid var(--border-subtle);
+  margin-bottom: 0.5rem;
 }
-.mobile-head { display: flex; justify-content: space-between; gap: 0.5rem; align-items: center; margin-bottom: 0.6rem; }
-.mobile-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+.mobile-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.61rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--divider);
+}
 
-/* Responsive Breakpoint Fix (Prevents Sidebar Overlap) */
+.mobile-scores { text-align: right; }
+.mobile-total-badge {
+  font-size: 0.95rem;
+  font-weight: 900;
+  color: var(--gold);
+  font-family: var(--font-disp);
+}
+.mobile-round-badge {
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.mobile-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+
+/* Stepper Controls */
+.stepper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--surface3);
+  border: 1px solid var(--border-gold);
+  border-radius: 0.6rem;
+  padding: 2px;
+}
+.btn-step {
+  width: 38px;
+  height: 38px;
+  border-radius: 0.4rem;
+  border: none;
+  background: var(--surface2);
+  color: var(--gold);
+  font-size: 1.2rem;
+  font-weight: 800;
+  display: grid;
+  place-items: center;
+}
+.btn-step:active { background: var(--primary); color: #fff; }
+.step-val {
+  font-weight: 800;
+  font-size: 1.1rem;
+  min-width: 24px;
+  text-align: center;
+}
+
+.trick-alert {
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 0.75rem;
+}
+.alert-warn { background: rgba(245, 158, 11, 0.15); color: var(--gold); border: 1px solid var(--border-gold); }
+.alert-ok { background: var(--success-bg); color: var(--success); border: 1px solid rgba(16, 185, 129, 0.3); }
+
 @media(max-width: 1024px) {
   .main-grid { grid-template-columns: 1fr; }
   .hero-grid { grid-template-columns: 1fr; }
@@ -448,11 +489,16 @@ tr.active-row .round-col {
     </section>
 
     <section class="card mobile" style="padding: 1rem;">
-      <div><p class="label">Mobilfokus</p><h2>Aktive Runde eingeben</h2></div>
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div><p class="label">Mobilfokus</p><h2>Runde <span id="mobileRoundTitle">1</span> eingeben</h2></div>
+      </div>
+      
+      <div id="trickValidation" class="trick-alert alert-ok">✓ Stichesumme stimmt</div>
       <div id="mobileCards"></div>
-      <div class="toolbar">
-        <button class="btn" id="prevBtn">← Vorherige Runde</button>
-        <button class="btn btn-primary" id="nextBtn">Nächste Runde →</button>
+      
+      <div class="toolbar" style="margin-top:0.5rem;">
+        <button class="btn" id="prevBtn" style="flex:1;">← Vorherige</button>
+        <button class="btn btn-primary" id="nextBtn" style="flex:1;">Nächste →</button>
       </div>
     </section>
   </main>
@@ -493,6 +539,8 @@ const els = {
   statDealer: document.getElementById('statDealer'),
   statBidder: document.getElementById('statBidder'),
   saveInfo: document.getElementById('saveInfo'),
+  trickValidation: document.getElementById('trickValidation'),
+  mobileRoundTitle: document.getElementById('mobileRoundTitle'),
   modeBtns: [...document.querySelectorAll('.mode-btn')]
 };
 
@@ -521,7 +569,6 @@ function names() { return [...els.players.querySelectorAll('input')].map((i, idx
 function dealerIndex(round) { return (Number(els.dealerStart.value) + round - 1) % names().length; }
 function bidderIndex(round) { return (dealerIndex(round) + 1) % names().length; }
 
-// Fixed Point Evaluation (Empty = unplayed)
 function scoreWizard(bidStr, trickStr) {
   if (bidStr === '' || trickStr === '' || bidStr === null || trickStr === null) {
     return { score: 0, isPlayed: false };
@@ -591,6 +638,7 @@ function setActiveRound(r) {
   const max = Number(els.maxRounds.value) || 1;
   activeRound = Math.max(1, Math.min(r, max));
   els.currentRound.value = String(activeRound);
+  els.mobileRoundTitle.textContent = String(activeRound);
   
   [...els.scoreTable.querySelectorAll('tbody tr')].forEach(tr => {
     if (Number(tr.dataset.round) === activeRound) {
@@ -665,14 +713,14 @@ function buildTable(savedRows = null) {
       bid.type = 'number';
       bid.min = '0';
       bid.max = String(round);
-      bid.value = saved.bid !== undefined ? saved.bid : ''; // Starts EMPTY
+      bid.value = saved.bid !== undefined ? saved.bid : '';
       bid.className = 'mini bid';
 
       const trick = document.createElement('input');
       trick.type = 'number';
       trick.min = '0';
       trick.max = String(round);
-      trick.value = saved.tricks !== undefined ? saved.tricks : ''; // Starts EMPTY
+      trick.value = saved.tricks !== undefined ? saved.tricks : '';
       trick.className = 'mini trick';
 
       const score = document.createElement('span');
@@ -730,6 +778,25 @@ function buildTable(savedRows = null) {
   renderMobile();
 }
 
+function calculateTotalsUpToRound(upToRound) {
+  const n = names();
+  const totals = Array(n.length).fill(0);
+  const rows = [...els.scoreTable.querySelectorAll('tbody tr')].slice(0, upToRound);
+
+  rows.forEach(row => {
+    const bids = [...row.querySelectorAll('.bid')];
+    const tricks = [...row.querySelectorAll('.trick')];
+
+    bids.forEach((bEl, idx) => {
+      const res = scoreWizard(bEl.value, tricks[idx].value);
+      if (res.isPlayed) {
+        totals[idx] += res.score;
+      }
+    });
+  });
+  return totals;
+}
+
 function updateRoundState(playerNames = names(), totals = null) {
   const current = activeRound;
   const dealer = playerNames[dealerIndex(current)] || defaults[0];
@@ -782,6 +849,30 @@ function renderMobile() {
   const bids = row.querySelectorAll('.bid');
   const tricks = row.querySelectorAll('.trick');
   const scores = row.querySelectorAll('[data-score]');
+  const currentTotals = calculateTotalsUpToRound(current);
+
+  // Trick sum validation check
+  let totalTricksEntered = 0;
+  let filledTricks = 0;
+  tricks.forEach(t => {
+    if (t.value !== '') {
+      totalTricksEntered += Number(t.value);
+      filledTricks++;
+    }
+  });
+
+  if (filledTricks === n.length) {
+    if (totalTricksEntered === current) {
+      els.trickValidation.className = 'trick-alert alert-ok';
+      els.trickValidation.textContent = `✓ Stichesumme korrekte (${totalTricksEntered}/${current})`;
+    } else {
+      els.trickValidation.className = 'trick-alert alert-warn';
+      els.trickValidation.textContent = `⚠️ Stichesumme ist ${totalTricksEntered}, müsste aber ${current} sein!`;
+    }
+  } else {
+    els.trickValidation.className = 'trick-alert alert-warn';
+    els.trickValidation.textContent = `Eingetragen: ${totalTricksEntered} von ${current} Stichen`;
+  }
 
   els.mobileCards.innerHTML = '';
   n.forEach((name, idx) => {
@@ -790,12 +881,59 @@ function renderMobile() {
     
     const head = document.createElement('div');
     head.className = 'mobile-head';
-    head.innerHTML = `<div><div class="label">Spieler ${idx + 1}</div><strong>${name}</strong></div>`;
     
-    const sc = document.createElement('span');
-    sc.className = scores[idx].className;
-    sc.textContent = scores[idx].textContent;
-    head.appendChild(sc);
+    const roundScoreStr = scores[idx].textContent !== '—' ? `${scores[idx].textContent} Pkt. (Runde)` : 'Keine Wertung';
+    
+    head.innerHTML = `
+      <div>
+        <div class="label">P${idx + 1}</div>
+        <strong>${name}</strong>
+      </div>
+      <div class="mobile-scores">
+        <div class="mobile-total-badge">Gesamt: ${currentTotals[idx]} Pkt.</div>
+        <div class="mobile-round-badge">${roundScoreStr}</div>
+      </div>
+    `;
+
+    const createStepper = (inputEl) => {
+      const wrap = document.createElement('div');
+      wrap.className = 'stepper';
+      
+      const btnMinus = document.createElement('button');
+      btnMinus.className = 'btn-step';
+      btnMinus.textContent = '−';
+      btnMinus.type = 'button';
+      btnMinus.onclick = () => {
+        let val = inputEl.value === '' ? 0 : Number(inputEl.value);
+        if (val > 0) {
+          inputEl.value = String(val - 1);
+          recalc();
+          saveState();
+          renderMobile();
+        }
+      };
+
+      const valDisplay = document.createElement('span');
+      valDisplay.className = 'step-val';
+      valDisplay.textContent = inputEl.value === '' ? '—' : inputEl.value;
+
+      const btnPlus = document.createElement('button');
+      btnPlus.className = 'btn-step';
+      btnPlus.textContent = '+';
+      btnPlus.type = 'button';
+      btnPlus.onclick = () => {
+        let val = inputEl.value === '' ? -1 : Number(inputEl.value);
+        if (val < current) {
+          inputEl.value = String(val + 1);
+          recalc();
+          saveState();
+          renderMobile();
+        }
+      };
+
+      wrap.append(btnMinus, valDisplay, btnPlus);
+      return wrap;
+    };
 
     const grid = document.createElement('div');
     grid.className = 'mobile-grid';
@@ -803,38 +941,12 @@ function renderMobile() {
     const f1 = document.createElement('div');
     f1.className = 'field';
     f1.innerHTML = '<label>Ansage</label>';
-    const in1 = document.createElement('input');
-    in1.type = 'number';
-    in1.min = '0';
-    in1.max = String(current);
-    in1.value = bids[idx].value;
-    in1.className = 'mini';
-    in1.style.maxWidth = '100%';
-    in1.style.height = '40px';
-    in1.addEventListener('input', (e) => {
-      bids[idx].value = e.target.value;
-      recalc();
-      saveState();
-    });
-    f1.appendChild(in1);
+    f1.appendChild(createStepper(bids[idx]));
 
     const f2 = document.createElement('div');
     f2.className = 'field';
     f2.innerHTML = '<label>Stiche</label>';
-    const in2 = document.createElement('input');
-    in2.type = 'number';
-    in2.min = '0';
-    in2.max = String(current);
-    in2.value = tricks[idx].value;
-    in2.className = 'mini';
-    in2.style.maxWidth = '100%';
-    in2.style.height = '40px';
-    in2.addEventListener('input', (e) => {
-      tricks[idx].value = e.target.value;
-      recalc();
-      saveState();
-    });
-    f2.appendChild(in2);
+    f2.appendChild(createStepper(tricks[idx]));
 
     grid.append(f1, f2);
     card.append(head, grid);
